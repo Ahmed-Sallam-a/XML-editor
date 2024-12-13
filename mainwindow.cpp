@@ -31,7 +31,7 @@ void MainWindow::on_actionOpen_triggered()
     file_path = QFileDialog::getOpenFileName(this, "Choose a file", "c://", "*.xml");
     QFile file(file_path);
     if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::warning(this, "Warning", "File didn't open !");
+        QMessageBox::warning(this, "Warning", "File not found!");
         return;
     }
     QTextStream in(&file);

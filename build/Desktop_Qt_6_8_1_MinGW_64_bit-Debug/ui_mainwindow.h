@@ -50,22 +50,85 @@ public:
         MainWindow->resize(800, 600);
         actionOpen = new QAction(MainWindow);
         actionOpen->setObjectName("actionOpen");
+        QIcon icon;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::DocumentOpen)) {
+            icon = QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen);
+        } else {
+            icon.addFile(QString::fromUtf8("open.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionOpen->setIcon(icon);
         actionSave = new QAction(MainWindow);
         actionSave->setObjectName("actionSave");
+        QIcon icon1;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::DocumentSave)) {
+            icon1 = QIcon::fromTheme(QIcon::ThemeIcon::DocumentSave);
+        } else {
+            icon1.addFile(QString::fromUtf8("save.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionSave->setIcon(icon1);
         actionSave_as = new QAction(MainWindow);
         actionSave_as->setObjectName("actionSave_as");
+        QIcon icon2;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::DocumentSaveAs)) {
+            icon2 = QIcon::fromTheme(QIcon::ThemeIcon::DocumentSaveAs);
+        } else {
+            icon2.addFile(QString::fromUtf8("save as.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionSave_as->setIcon(icon2);
         actionCopy = new QAction(MainWindow);
         actionCopy->setObjectName("actionCopy");
+        QIcon icon3;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::EditCopy)) {
+            icon3 = QIcon::fromTheme(QIcon::ThemeIcon::EditCopy);
+        } else {
+            icon3.addFile(QString::fromUtf8("copy.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionCopy->setIcon(icon3);
         actionCut = new QAction(MainWindow);
         actionCut->setObjectName("actionCut");
+        QIcon icon4;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::EditCut)) {
+            icon4 = QIcon::fromTheme(QIcon::ThemeIcon::EditCut);
+        } else {
+            icon4.addFile(QString::fromUtf8("cut.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionCut->setIcon(icon4);
         actionPaste = new QAction(MainWindow);
         actionPaste->setObjectName("actionPaste");
+        QIcon icon5;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::EditPaste)) {
+            icon5 = QIcon::fromTheme(QIcon::ThemeIcon::EditPaste);
+        } else {
+            icon5.addFile(QString::fromUtf8("paste.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionPaste->setIcon(icon5);
         actionUndo = new QAction(MainWindow);
         actionUndo->setObjectName("actionUndo");
+        QIcon icon6;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::EditUndo)) {
+            icon6 = QIcon::fromTheme(QIcon::ThemeIcon::EditUndo);
+        } else {
+            icon6.addFile(QString::fromUtf8("undo.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionUndo->setIcon(icon6);
         actionRedo = new QAction(MainWindow);
         actionRedo->setObjectName("actionRedo");
+        QIcon icon7;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::EditRedo)) {
+            icon7 = QIcon::fromTheme(QIcon::ThemeIcon::EditRedo);
+        } else {
+            icon7.addFile(QString::fromUtf8("redo.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionRedo->setIcon(icon7);
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName("actionNew");
+        QIcon icon8;
+        if (QIcon::hasThemeIcon(QIcon::ThemeIcon::DocumentNew)) {
+            icon8 = QIcon::fromTheme(QIcon::ThemeIcon::DocumentNew);
+        } else {
+            icon8.addFile(QString::fromUtf8("new.jpg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        }
+        actionNew->setIcon(icon8);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         verticalLayout = new QVBoxLayout(centralwidget);
@@ -95,8 +158,8 @@ public:
         menubar->addAction(menuTools->menuAction());
         menuFile->addAction(actionNew);
         menuFile->addAction(actionOpen);
-        menuFile->addAction(actionSave);
         menuFile->addSeparator();
+        menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_as);
         menuEdit->addAction(actionCopy);
         menuEdit->addAction(actionCut);
