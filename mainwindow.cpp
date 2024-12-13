@@ -41,11 +41,32 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
+    QFile file(file_path);
+    if(!file.open(QFile::WriteOnly | QFile::Text)){
+        QMessageBox::warning(this, "Warning", "Couldn't access the file");
+        return;
+    }
+    QTextStream out(&file);
+    QString text =ui->textEdit->toPlainText();
+    out << text;
+    file.flush();
+    file.close();
 
 }
 
 void MainWindow::on_actionSave_as_triggered()
 {
+    file_path = QFileDialog::getOpenFileName(this, "Choose a file", "c://", "*.xml");
+    QFile file(file_path);
+    if(!file.open(QFile::WriteOnly | QFile::Text)){
+        QMessageBox::warning(this, "Warning", "Couldn't access the file");
+        return;
+    }
+    QTextStream out(&file);
+    QString text =ui->textEdit->toPlainText();
+    out << text;
+    file.flush();
+    file.close();
 
 }
 
