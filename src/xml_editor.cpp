@@ -5,12 +5,6 @@
 #include <fstream>
 using namespace std;
 
-// stacks and vectors
-stack<char> tags;
-stack<string> s;
-vector<int> errors;
-stack<string> wrong;
-
 // Check if a line is empty
 bool lineEmpty(const string& line) {
     for (char c : line) {
@@ -21,6 +15,12 @@ bool lineEmpty(const string& line) {
 
 // Function to check XML consistency and fix errors
 void checkXMLConsistency(const string& inputFile, const string& outputFile, bool fixErrors) {
+
+// stacks and vectors
+stack<char> tags;
+stack<string> s;
+vector<int> errors;
+stack<string> wrong;
 
 ifstream file(inputFile);
 if (!file.is_open()) {
