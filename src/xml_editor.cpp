@@ -274,7 +274,6 @@ while (getline(stream, line)) {
             output.push_back(line);
             line = s2;
             lineNumber++;
-            //////////////////////s.pop();
             wrong.pop();
             i=-1;
         }
@@ -282,8 +281,6 @@ while (getline(stream, line)) {
     }
     output.push_back(line);
 }
-
-//file.close();
     if (!errors.empty()) {
 
         if(flag == 'f'){
@@ -311,7 +308,7 @@ while (getline(stream, line)) {
 
 // Main function
 int main(int argc, char* argv[]) {
-    /*if (argc < 4) {
+    if (argc < 4) {
         cerr << "Usage: xml_editor verify -i input_file.xml [-f] [-o output_file.xml]" << endl;
         return 1;
     }
@@ -334,13 +331,8 @@ int main(int argc, char* argv[]) {
         cerr << "Input file is required. Use -i <input_file.xml>" << endl;
         return 1;
     }
-    */
-    char flag; string text;
-    cin>>flag>>text;
-    cout<<checkXMLConsistencyGUI(text,flag);
-    //checkXMLConsistencyCommandLine(inputFile, outputFile, fixErrors);
+
+    checkXMLConsistencyCommandLine(inputFile, outputFile, fixErrors);
     return 0;
 }
 
-//inputs  : string xml, string flag
-//outputs :
