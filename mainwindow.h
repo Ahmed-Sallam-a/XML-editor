@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QToolBar>
-
+#include <QTextEdit>
 #include <QMainWindow>
-
+#include "xmlhighlighter.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -37,8 +37,11 @@ private slots:
 
     void on_actionNew_triggered();
 
+    void on_actionconvert_to_jason_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString file_path;
+    XMLHighlighter *highlighter;
 };
 #endif // MAINWINDOW_H

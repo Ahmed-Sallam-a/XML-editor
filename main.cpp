@@ -1,7 +1,7 @@
 #include "mainwindow.h"
-
+#include <QToolBar>
 #include <QApplication>
-
+#include <QAction>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

@@ -10,10 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    xmlhighlighter.cpp \
+    xmltojsonconverter.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    xmlhighlighter.h \
+    xmltojsonconverter.h
 
 FORMS += \
     mainwindow.ui

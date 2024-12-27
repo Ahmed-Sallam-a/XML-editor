@@ -5,13 +5,14 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QString>
-
+#include "xmltojsonconverter.cpp"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     this->setCentralWidget(ui->textEdit);
+    highlighter = new XMLHighlighter(ui->textEdit->document());
 }
 
 MainWindow::~MainWindow()
@@ -99,3 +100,38 @@ void MainWindow::on_actionRedo_triggered()
 {
     ui->textEdit->redo();
 }
+
+void MainWindow::on_actionconvert_to_jason_triggered()
+{
+    try {
+        // Get the XML content from the text edit
+        QString xmlContent = ui->textEdit->toPlainText();
+
+        // Check if the text edit is empty
+        if (xmlContent.isEmpty()) {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("The text edit is empty. Please enter XML content."));
+            return;
+        }
+
+        // Create converter instance
+
+
+        // Convert to JSON
+        std::string jsonStr = XmlToJsonConverter::convert(xmlContent.toStdString());
+
+        // Create a new text edit or use existing one for JSON output
+        ui->textEdit->clear();
+        ui->textEdit->setPlainText(QString::fromStdString(jsonStr));
+
+        // Optional: Show success message
+        QMessageBox::information(this, tr("Success"),
+                                 tr("XML successfully converted to JSON!"));
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, tr("Conversion Error"),
+                              tr("Failed to convert XML: %1").arg(e.what()));
+    }
+
+}
+

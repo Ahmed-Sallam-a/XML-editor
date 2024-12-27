@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -60,6 +60,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionconvert_to_jason"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -151,6 +152,11 @@
      <family>Segoe UI Symbol</family>
      <bold>false</bold>
     </font>
+   </property>
+  </action>
+  <action name="actionconvert_to_jason">
+   <property name="text">
+    <string>convert to jason</string>
    </property>
   </action>
  </widget>
