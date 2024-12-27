@@ -11,7 +11,7 @@ void XMLHighlighter::setupFormats() {
 
     // Tags format (like <tag>, </tag>)
     QTextCharFormat tagFormat;
-    tagFormat.setForeground(Qt::darkBlue);
+    tagFormat.setForeground(Qt::darkCyan);
     tagFormat.setFontWeight(QFont::Bold);
     rule.pattern = QRegularExpression(QStringLiteral("(<[!?]?\\w+(?=\\s|>|/>)[^>]*>|</\\w+>)"));
     rule.format = tagFormat;
@@ -19,7 +19,7 @@ void XMLHighlighter::setupFormats() {
 
     // Attributes format (like attribute=)
     QTextCharFormat attributeFormat;
-    attributeFormat.setForeground(Qt::darkGreen);
+    attributeFormat.setForeground(Qt::darkMagenta);
     rule.pattern = QRegularExpression(QStringLiteral("\\s+\\w+(?=\\s*=)"));
     rule.format = attributeFormat;
     highlightingRules.append(rule);
