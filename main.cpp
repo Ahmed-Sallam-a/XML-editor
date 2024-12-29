@@ -32,7 +32,7 @@ string parseXMLToString(const string& filePath) {
     return content;
 }
 
-void compress(const string& filePath) {
+void compress(const string& filePath, const string& outputFilePath) {
     string input = parseXMLToString(filePath);
     unordered_map<string, int> stringTable;
     int code = 256; // Start with the first available code after ASCII
@@ -60,7 +60,7 @@ void compress(const string& filePath) {
     outputCodes.push_back(stringTable[P]);
 
     // Write the compressed data to a .comp file
-    ofstream compFile("C:\\Users\\AHMED SAMIR\\Desktop\\DSA\\tut5\\tut5problems\\tst1.comp", ios::binary);
+    ofstream compFile(outputFilePath, ios::binary);
     if (compFile.is_open()) {
         for (int code : outputCodes) {
             compFile.write(reinterpret_cast<const char*>(&code), sizeof(code));
@@ -118,7 +118,7 @@ void decompress(const string& inputFilePath, const string& outputFilePath) {
     // Write the decompressed data to an XML file
     ofstream xmlFile(outputFilePath);
     if (xmlFile.is_open()) {
-        xmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+       // xmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         xmlFile << "<decompressedData>\n";
         xmlFile << "  <content>" << decompressed << "</content>\n";
         xmlFile << "</decompressedData>\n";
@@ -129,15 +129,29 @@ void decompress(const string& inputFilePath, const string& outputFilePath) {
     }
 }
 
-int main() {
-    string input ="C:\\Users\\AHMED SAMIR\\Downloads\\34.5-KB-XML-File.xml";
-    // cout << "Enter the input string: ";
-    // cin >> input;
+int main(int argc, char* argv[]) {
+     // Ensure at least 6 arguments are provided
+    if (argc != 6) {
+        cerr << "Usage: xml_editor compress/decompress -i input_file.xml -o output_file.xml" << endl;
+        return 1;
+    }
+    // Check the command and arguments
+    string command = argv[1];
+    string inputFlag = argv[2];
+    string inputFile = argv[3];
+    string outputFlag = argv[4];
+    string outputFile = argv[5];
+    if ((command != "compress"&&command != "decompress") || inputFlag != "-i" || outputFlag != "-o") {
+        cerr << "Invalid command or flags. Usage: xml_editor format -i input_file.xml -o output_file.xml" << endl;
+        return 1;
+    }
+    
+    if(command=="compress"){compress(inputFile,outputFile);}
+    else if(command=="decompress"){decompress(inputFile,outputFile);}
 
-    compress(input);
-       //"C:\Users\AHMED SAMIR\Desktop\DSA\tut5\tut5problems\kero.xml"
-       string outputFilePath = "C:\\Users\\AHMED SAMIR\\Desktop\\DSA\\tut5\\tut5problems\\kero.xml";
-      decompress("C:\\Users\\AHMED SAMIR\\Desktop\\DSA\\tut5\\tut5problems\\tst1.comp", outputFilePath);
+    // compress(input);
+    //    string outputFilePath = "C:\\Users\\AHMED SAMIR\\Desktop\\DSA\\tut5\\tut5problems\\kerowahmed.xml";
+    //  decompress("C:\\Users\\AHMED SAMIR\\Desktop\\DSA\\tut5\\tut5problems\\tst1.comp", outputFilePath);
 
     return 0;
 }
