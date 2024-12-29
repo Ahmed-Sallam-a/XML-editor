@@ -9,6 +9,9 @@ string checkXMLConsistencyGUI(const string &inputText, char flag);
 
 // Function to search posts by word or topic
 void postSearch(const bool isCMD, const string &xmlContent, const string &searchTerm, bool isWord);
+string prettifyXML(const string& inputFile);
+void prettifyXML(const string& inputFile, const string& outputFile);
+pair<int, string> getMostActiveUser();
 
 // Helper functions
 bool lineEmpty(const string &line)
@@ -560,3 +563,314 @@ void postSearch(const bool isCMD, const string &xmlContent, const string &search
             cout << post << endl;
     }
 }
+
+void prettifyXML(const string& inputFile, const string& outputFile) {
+    ifstream input(inputFile);
+    ofstream output(outputFile);
+
+    if (!input.is_open()) {
+        cerr << "Error: Unable to open input file." << endl;
+        return;
+    }
+
+    if (!output.is_open()) {
+        cerr << "Error: Unable to open output file." << endl;
+        return;
+    }
+
+    string line;
+    int indentLevel = 0;
+    while (getline(input, line)) {
+
+        if (line.empty()) continue; // Skip empty lines
+
+        int pos = 0;
+        bool firstFlag=false, secondFlag=false;
+        while (pos < line.size()) {
+            if (line[pos] == '<') {
+
+                if(firstFlag) secondFlag=true;
+                else if(!firstFlag&&!secondFlag) firstFlag=true;
+
+
+                int endPos = line.find('>', pos);
+                if (endPos == string::npos) break;
+
+                string tag = line.substr(pos, endPos - pos + 1);
+
+                // Handle closing tags
+
+                if (tag[1] == '/') {
+                    indentLevel--;
+                }
+
+                if (!secondFlag){
+                    // Write the tag with proper indentation
+                    for (int i = 0; i < indentLevel; ++i) {
+                        output << "  ";
+                    }
+                }
+
+                output << tag ;
+
+                // Handle opening tags (not self-closing)
+                if (tag[1] != '/' && tag[tag.size() - 2] != '/') {
+                    indentLevel++;
+                }
+
+                pos = endPos + 1;
+            } else {
+                // Handle text content between tags
+                int nextTagPos = line.find('<', pos);
+                string text = line.substr(pos, nextTagPos - pos);
+
+
+                if (!text.empty()) {
+                    // for (int i = 0; i < indentLevel; ++i) {
+                    //     output << "  ";
+                    // }
+                    output << text ;
+                }
+
+                pos = nextTagPos ;
+            }
+        }
+        output << endl;
+    }
+
+    input.close();
+    output.close();
+
+    cout << "Formatted XML has been saved to: " << outputFile << endl;
+}
+
+
+// same function as above but for GUI
+
+string prettifyXML(const string& inputFile) {
+
+    istringstream stream(inputFile);
+
+    string line;
+    string output;
+    int indentLevel = 0;
+    while (getline(stream, line)) {
+
+        if (line.empty()) continue; // Skip empty lines
+
+        int pos = 0;
+        bool firstFlag=false, secondFlag=false;
+        while (pos < line.size()) {
+            if (line[pos] == '<') {
+
+                if(firstFlag) secondFlag=true;
+                else if(!firstFlag&&!secondFlag) firstFlag=true;
+
+
+                int endPos = line.find('>', pos);
+                if (endPos == string::npos) break;
+
+                string tag = line.substr(pos, endPos - pos + 1);
+
+                // Handle closing tags
+
+                if (tag[1] == '/') {
+                    indentLevel--;
+                }
+
+                if (!secondFlag){
+                    // Write the tag with proper indentation
+                    for (int i = 0; i < indentLevel; ++i) {
+                        output += "  ";
+                    }
+                }
+
+                output += tag ;
+
+                // Handle opening tags (not self-closing)
+                if (tag[1] != '/' && tag[tag.size() - 2] != '/') {
+                    indentLevel++;
+                }
+
+                pos = endPos + 1;
+            } else {
+                // Handle text content between tags
+                int nextTagPos = line.find('<', pos);
+                string text = line.substr(pos, nextTagPos - pos);
+
+
+                if (!text.empty()) {
+                    // for (int i = 0; i < indentLevel; ++i) {
+                    //     output << "  ";
+                    // }
+                    output +=  text ;
+                }
+
+                pos = nextTagPos ;
+            }
+        }
+        output += "\n";
+    }
+
+
+    cout << "Formatted XML has been saved to: " << output << endl;
+    return output;
+}
+unordered_map<int, unordered_set<int>> adjList; // User ID and their followers
+    unordered_map<int, string> userNames;          // User ID to name mapping
+
+    string extractTagValue(const string &line, const string &tag) {
+        int start = line.find("<" + tag + ">") ;
+        int end = line.find("</" + tag + ">");
+        if (start == string::npos || end == string::npos) return "";
+        start += tag.size() + 2;
+        return line.substr(start,end-start);
+    }
+
+    void readXML(const string &fileName){
+        ifstream file (fileName);
+        if (!file.is_open()) {
+            cerr << "Error: Could not open file " << fileName << endl;
+            return;
+        }
+        string line;
+        int currentUserId = -1;
+        while (getline(file,line))
+        {
+            // check ID tag
+            if (line.find("<id>") != string::npos)
+            {
+                int id = stoi(extractTagValue(line, "id"));
+                // assign the new user
+                if (currentUserId == -1)
+                    currentUserId = id;
+
+                // adding follower to the current user
+                else
+                    adjList[currentUserId].insert(id);
+            }
+            // check name tag
+            else if (line.find("<name>") != string::npos)
+            {
+                // mapping the current user id to the name
+                string name = extractTagValue(line, "name");
+                userNames[currentUserId] = name;
+            }
+            // reset for new user
+            else if (line.find("</user>")!= string::npos)
+                currentUserId = -1;
+
+        }
+        file.close();
+    }
+
+    void addUser(int id, const string &name) {
+        userNames[id] = name;
+        adjList[id]; // Initialize an empty set for the user
+    }
+
+    void addFollower(int user, int follower) {
+        adjList[user].insert(follower);
+    }
+
+    pair<int, string> getMostActiveUser() {
+        int maxConnections = 0, mostActive = -1;
+        for (const auto &entry : adjList) {
+            int connections = entry.second.size();
+            for (const auto &user : adjList) {
+                if (user.second.count(entry.first)) connections++;
+            }
+            if (connections > maxConnections || (connections == maxConnections && entry.first < mostActive)) {
+                maxConnections = connections;
+                mostActive = entry.first;
+            }
+        }
+        return {mostActive, userNames[mostActive]};
+    }
+
+ string minifyXMLLine(const string &xmlContent) {
+    string minified;
+    bool insideTag = false;
+
+    // Iterate through each character in the line
+    for (int i = 0; i < xmlContent.size(); ++i) {
+        char currentChar = xmlContent[i];
+
+        // If the current character is part of a tag (i.e., '<' or '>')
+        if (currentChar == '<') {
+            insideTag = true;
+        }
+        else if (currentChar == '>') {
+            insideTag = false;
+        }
+
+        // If we're not inside a tag, skip unnecessary whitespaces and newlines
+        if (!insideTag) {
+            if (isspace(currentChar)) {
+                // Skip spaces outside of tags
+                continue;
+            }
+        }
+        // Append the current character to the minified result
+        minified += currentChar;
+    }
+
+    return minified;
+}
+
+// Function to read the XML file, minify it, and save it to another file
+void minifyXMLFile(const string &inputFileName, const string &outputFileName) {
+    ifstream inputFile(inputFileName);
+    if (!inputFile.is_open()) {
+        cerr << "Error opening input file!" << endl;
+        return;
+    }
+    // istringstream stream (inputFileName);
+
+    // To hold the content of the XML file
+    string minifiedContent;
+    string line;
+
+    // Read the file line by line
+    while (getline(inputFile, line)) {
+        // Minify each line and append to the result
+        string minifiedLine = minifyXMLLine(line);
+        minifiedContent += minifiedLine + "\n";
+    }
+
+    inputFile.close();  // Close the input file
+
+    //Write the minified content to the output file
+    ofstream outputFile(outputFileName);
+    if (!outputFile.is_open()) {
+        cerr << "Error opening output file!" << endl;
+        return;
+    }
+
+
+    outputFile << minifiedContent;  // Write the minified content to the output file
+    outputFile.close();  // Close the output file
+
+    cout << "Minification successful!" << endl;
+}
+
+
+ // same function as above but with istringstream for gui
+string minifyXMLFile(const string &inputFileName) {
+
+    istringstream stream (inputFileName);
+
+    // To hold the content of the XML file
+    string minifiedContent;
+    string line;
+
+    // Read the file line by line
+    while (getline(stream, line)) {
+        // Minify each line and append to the result
+        string minifiedLine = minifyXMLLine(line);
+        minifiedContent += minifiedLine + "\n";
+    }
+    return minifiedContent;
+}
+
+
