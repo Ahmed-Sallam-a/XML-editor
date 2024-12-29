@@ -21,13 +21,6 @@ string parseXMLToString(const string& filePath) {
     }
     xmlFile.close();
 
-    // // Use a regex to remove all XML tags
-    // regex tagRegex("<[^>]+>");
-    // result = regex_replace(content, tagRegex, "");
-
-    // // Trim any leading or trailing whitespace
-    // result.erase(0, result.find_first_not_of(" \t\n\r"));
-    // result.erase(result.find_last_not_of(" \t\n\r") + 1);
 
     return content;
 }
