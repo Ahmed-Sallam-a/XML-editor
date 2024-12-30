@@ -39,6 +39,8 @@ private slots:
 
     void on_actionconvert_to_jason_triggered();
 
+    void on_actionConvert_to_png_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString file_path;

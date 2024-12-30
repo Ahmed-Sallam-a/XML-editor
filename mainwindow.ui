@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -61,6 +61,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionconvert_to_jason"/>
+    <addaction name="actionConvert_to_png"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -156,7 +157,12 @@
   </action>
   <action name="actionconvert_to_jason">
    <property name="text">
-    <string>convert to jason</string>
+    <string>Convert to json</string>
+   </property>
+  </action>
+  <action name="actionConvert_to_png">
+   <property name="text">
+    <string>Convert to png</string>
    </property>
   </action>
  </widget>
