@@ -1,9 +1,5 @@
 # ninja log v6
-1	571	7572405673991606	CMakeFiles/untitled8.dir/main.cpp.obj	d86aa261f6aaf081
-6	2573	7572405674046763	CMakeFiles/untitled8.dir/XmlToJsonConverter.cpp.obj	32760f552559eb32
-2573	3968	7572405699712078	untitled8.exe	3af67f46ef610afd
-21	496	7572406093445984	CMakeFiles/untitled8.dir/main.cpp.obj	d86aa261f6aaf081
-496	1845	7572406098212126	untitled8.exe	3af67f46ef610afd
 125	837	7572633908296357	CMakeFiles/untitled8.dir/main.cpp.obj	d86aa261f6aaf081
 130	2677	7572633908345568	CMakeFiles/untitled8.dir/XmlToJsonConverter.cpp.obj	32760f552559eb32
 2677	4215	7572633933821146	untitled8.exe	3af67f46ef610afd
+14	24	7572897031330744	clean	20b1347d9ae3b987
