@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QString>
-#include "xmltojsonconverter.cpp"
+#include "xmltojsonconverter.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
