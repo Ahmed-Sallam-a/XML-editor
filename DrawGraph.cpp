@@ -164,6 +164,7 @@ void parseXMLAndBuildGraph(const string& xmlContent, Graph& graph) {
         }
     }
 
+
     // First pass: Add all users
     for(const auto& userData : usersData) {
         graph.addUser(userData.userId, userData.userName);
@@ -181,3 +182,49 @@ void parseXMLAndBuildGraph(const string& xmlContent, Graph& graph) {
         }
     }
 }
+
+void generatePNG(const string& dotFilename, const string& pngFilename) {
+    string command = "dot -Tpng " + dotFilename + " -o " + pngFilename;
+    int result = system(command.c_str());
+    if (result == 0) {
+        cout << "Successfully generated " << pngFilename << endl;
+    } else {
+        cerr << "Failed to generate PNG file" << endl;
+    }
+}
+
+void processXMLToPNG(const string& xmlFilename, const string& pngFilename) {
+    string dotFilename = "temp.dot"; // Temporary DOT file
+
+    // Read XML content
+    ifstream xmlFile(xmlFilename);
+    if (!xmlFile.is_open()) {
+        cerr << "Failed to open XML file: " << xmlFilename << endl;
+        return;
+    }
+    stringstream xmlBuffer;
+    xmlBuffer << xmlFile.rdbuf();
+    string xmlContent = xmlBuffer.str();
+    xmlFile.close();
+
+    // Build graph from XML content
+    Graph graph;
+    parseXMLAndBuildGraph(xmlContent, graph);
+
+    // Generate DOT file
+    graph.generateDOTFile(dotFilename);
+
+    // Generate PNG
+    generatePNG(dotFilename, pngFilename);
+
+    // Open the PNG file
+#ifdef _WIN32
+    string command = "start " + pngFilename;
+#elif __APPLE__
+    string command = "open " + pngFilename;
+#else
+    string command = "xdg-open " + pngFilename;
+#endif
+    system(command.c_str());
+}
+

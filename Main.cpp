@@ -1,16 +1,6 @@
 #include "DrawGraph.h"
 
-void generatePNG(const string& dotFilename, const string& pngFilename) {
-    string command = "dot -Tpng " + dotFilename + " -o " + pngFilename;
-    int result = system(command.c_str());
-    if (result == 0) {
-        cout << "Successfully generated " << pngFilename << endl;
-    } else {
-        cerr << "Failed to generate PNG file" << endl;
-    }
-}
-
-int main() {
+int main1() {
     Graph socialNetwork;
     string xmlContent = R"(
     <users>
@@ -51,3 +41,18 @@ int main() {
 
     return 0;
 }
+
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        cerr << "Usage: " << argv[0] << " <input.xml> <output.png>" << endl;
+        return 1;
+    }
+
+    string xmlFilename = argv[1];
+    string pngFilename = argv[2];
+
+    processXMLToPNG(xmlFilename, pngFilename);
+
+    return 0;
+}
+

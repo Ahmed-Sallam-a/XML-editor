@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 
+
 using namespace std;
 
 // Define the User class
@@ -48,5 +49,7 @@ struct UserData {
 };
 
 void parseXMLAndBuildGraph(const string& xmlContent, Graph& graph);
+void generatePNG(const string& dotFilename, const string& pngFilename);
+void processXMLToPNG(const string& xmlFilename, const string& pngFilename);
 
 #endif // DRAWGRAPH_H
