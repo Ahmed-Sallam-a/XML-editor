@@ -1,0 +1,19 @@
+{
+  "configuration": {
+    "appender": {
+      "@class": "ch.qos.logback.core.ConsoleAppender",
+      "@name": "console",
+      "encoder": {
+        "pattern": "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+      }
+    },
+    "appender": {
+      "@class": "ch.qos.logback.core.rolling.RollingFileAppender",
+      "@name": "FILE",
+      "file": "logs/app.log",
+      "encoder": {
+        "pattern": "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+      }
+    }
+  }
+}

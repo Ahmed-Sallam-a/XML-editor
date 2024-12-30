@@ -8,7 +8,11 @@
 #include <string>
 #include <vector>
 #include <map>
-
+#include <sstream>
+#include <stdexcept>
+#include <regex>
+#include <iostream>
+#include <fstream>
 class XmlToJsonConverter {
 private:
     struct Node {
@@ -30,6 +34,7 @@ private:
 public:
     // Convert XML string to JSON string
     static std::string convert(const std::string& xml);
+    static bool processFiles(const std::string& inputPath, const std::string& outputPath);
 };
 
 #endif // XMLTOJSONCONVERTER_H#

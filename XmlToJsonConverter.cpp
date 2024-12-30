@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <regex>
 #include <iostream>
-
+#include <fstream>
 // Trim leading and trailing whitespace
 std::string XmlToJsonConverter::trim(const std::string& str) {
     size_t first = str.find_first_not_of(" \t\n\r");
@@ -141,4 +141,40 @@ std::string XmlToJsonConverter::convert(const std::string& xml) {
     } catch (const std::exception& e) {
         return std::string("Error: ") + e.what();
     }
+}
+bool XmlToJsonConverter::processFiles(const std::string& inputPath, const std::string& outputPath) {
+    // Open the input file
+    std::ifstream infile(inputPath);
+    if (!infile.is_open()) {
+        std::cerr << "Error: Could not open input file: " << inputPath << std::endl;
+        return false;
+    }
+
+    // Read the entire content of the input file
+    infile.seekg(0, std::ios::end);
+    size_t size = infile.tellg();
+    infile.seekg(0, std::ios::beg);
+    std::string content(size, ' ');
+    infile.read(&content[0], size);
+    infile.close();
+
+    // Convert XML to JSON
+    std::string json = XmlToJsonConverter::convert(content);
+    if (json.find("Error:") == 0) {
+        std::cerr << json << std::endl;
+        return false;
+    }
+
+    // Open the output file
+    std::ofstream outfile(outputPath);
+    if (!outfile.is_open()) {
+        std::cerr << "Error: Could not open output file: " << outputPath << std::endl;
+        return false;
+    }
+
+    // Write the JSON content to the output file
+    outfile << json;
+    outfile.close();
+
+    return true;
 }
