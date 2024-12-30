@@ -13,6 +13,7 @@ SOURCES += \
     compressor.cpp \
     main.cpp \
     mainwindow.cpp \
+    xml_lib.cpp \
     xmlhighlighter.cpp \
     xmltojsonconverter.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     DrawGraph.h \
     compressor.h \
     mainwindow.h \
+    xml_lib.h \
     xmlhighlighter.h \
     xmltojsonconverter.h
 

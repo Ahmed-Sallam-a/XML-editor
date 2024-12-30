@@ -46,6 +46,26 @@ private slots:
     void on_actionDecompress_triggered();
     void saveas( QString text,QString type);
     QString opens(QString type);
+    void on_actionCheck_consistency_triggered();
+
+    void on_actionPrettify_triggered();
+
+    void on_action_Minify_triggered();
+
+    void on_actionMost_Active_user_triggered();
+
+    void on_actionMost_influencial_triggered();
+
+    void on_actionMutual_followers_triggered();
+
+    void on_actionSuggest_followers_triggered();
+
+    void on_actionWord_search_triggered();
+
+    void on_actionTopic_search_triggered();
+
+    void on_actionFix_errors_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString file_path;

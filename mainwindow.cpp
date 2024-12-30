@@ -8,6 +8,7 @@
 #include <QString>
 #include "xmltojsonconverter.h"
 #include "DrawGraph.h"
+#include "xml_lib.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -318,5 +319,86 @@ void MainWindow::on_actionDecompress_triggered()
     ui->textEdit->setPlainText(qDecompressed);
 
     qDebug() << "Decompression successful.";
+}
+
+
+void MainWindow::on_actionCheck_consistency_triggered()
+{
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    std::string isfixed = checkXMLConsistencyGUI(Text,'c');
+    if(isfixed.compare("The XML File is valid.")){
+        QString message = "There are errors in lines: "+QString::fromStdString(isfixed);
+        QMessageBox::warning(this, "Fixed errors",message);
+    }else{
+        QMessageBox::information(this, "No errors to fix", "The XML File is valid!");
+    }
+}
+
+
+void MainWindow::on_actionPrettify_triggered()
+{
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    std::string prettytext= prettifyXML(Text);
+    ui->textEdit->setPlainText(QString::fromStdString(prettytext));
+}
+
+
+void MainWindow::on_action_Minify_triggered()
+{
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    std::string minitext= minifyXMLLine(Text);
+    ui->textEdit->setPlainText(QString::fromStdString(minitext));
+}
+
+
+void MainWindow::on_actionMost_Active_user_triggered()
+{
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+
+
+}
+
+
+void MainWindow::on_actionMost_influencial_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionMutual_followers_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionSuggest_followers_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionWord_search_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionTopic_search_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionFix_errors_triggered()
+{
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    std::string fixedText=checkXMLConsistencyGUI(Text,'f');
+    if(fixedText.compare("The XML File is valid.")){
+    ui->textEdit->setPlainText(QString::fromStdString(fixedText));
+        QString message = "fixed errors in lines: "+QString::fromStdString(checkXMLConsistencyGUI(Text,'c'));
+        QMessageBox::information(this, "Fixed errors",message);
+    }else{
+         QMessageBox::information(this, "No errors to fix", "The XML File is valid!");
+    }
 }
 

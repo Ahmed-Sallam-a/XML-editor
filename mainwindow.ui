@@ -60,10 +60,33 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <widget class="QMenu" name="menuNetwork_Analysis">
+     <property name="title">
+      <string>Network Analysis</string>
+     </property>
+     <addaction name="actionMost_Active_user"/>
+     <addaction name="actionMost_influencial"/>
+     <addaction name="actionMutual_followers"/>
+     <addaction name="actionSuggest_followers"/>
+    </widget>
+    <widget class="QMenu" name="menuPost_search">
+     <property name="title">
+      <string>Post search</string>
+     </property>
+     <addaction name="actionWord_search"/>
+     <addaction name="actionTopic_search"/>
+    </widget>
+    <addaction name="actionCheck_consistency"/>
+    <addaction name="actionFix_errors"/>
+    <addaction name="actionPrettify"/>
+    <addaction name="action_Minify"/>
     <addaction name="actionconvert_to_jason"/>
-    <addaction name="actionConvert_to_png"/>
     <addaction name="actionCompress"/>
     <addaction name="actionDecompress"/>
+    <addaction name="actionConvert_to_png"/>
+    <addaction name="menuNetwork_Analysis"/>
+    <addaction name="menuPost_search"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -175,6 +198,56 @@
   <action name="actionDecompress">
    <property name="text">
     <string>Decompress</string>
+   </property>
+  </action>
+  <action name="actionCheck_consistency">
+   <property name="text">
+    <string>Check consistency</string>
+   </property>
+  </action>
+  <action name="actionPrettify">
+   <property name="text">
+    <string>Prettify</string>
+   </property>
+  </action>
+  <action name="action_Minify">
+   <property name="text">
+    <string> Minify</string>
+   </property>
+  </action>
+  <action name="actionMost_Active_user">
+   <property name="text">
+    <string>Most Active user</string>
+   </property>
+  </action>
+  <action name="actionMost_influencial">
+   <property name="text">
+    <string>Most influencial</string>
+   </property>
+  </action>
+  <action name="actionMutual_followers">
+   <property name="text">
+    <string>Mutual followers</string>
+   </property>
+  </action>
+  <action name="actionSuggest_followers">
+   <property name="text">
+    <string>Suggest followers</string>
+   </property>
+  </action>
+  <action name="actionWord_search">
+   <property name="text">
+    <string>Word search</string>
+   </property>
+  </action>
+  <action name="actionTopic_search">
+   <property name="text">
+    <string>Topic search</string>
+   </property>
+  </action>
+  <action name="actionFix_errors">
+   <property name="text">
+    <string>Fix errors</string>
    </property>
   </action>
  </widget>
