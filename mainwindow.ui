@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -62,6 +62,8 @@
     </property>
     <addaction name="actionconvert_to_jason"/>
     <addaction name="actionConvert_to_png"/>
+    <addaction name="actionCompress"/>
+    <addaction name="actionDecompress"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -163,6 +165,16 @@
   <action name="actionConvert_to_png">
    <property name="text">
     <string>Convert to png</string>
+   </property>
+  </action>
+  <action name="actionCompress">
+   <property name="text">
+    <string>Compress</string>
+   </property>
+  </action>
+  <action name="actionDecompress">
+   <property name="text">
+    <string>Decompress</string>
    </property>
   </action>
  </widget>

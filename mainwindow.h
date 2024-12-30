@@ -41,6 +41,11 @@ private slots:
 
     void on_actionConvert_to_png_triggered();
 
+    void on_actionCompress_triggered();
+
+    void on_actionDecompress_triggered();
+    void saveas( QString text,QString type);
+    QString opens(QString type);
 private:
     Ui::MainWindow *ui;
     QString file_path;

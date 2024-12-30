@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "compressor.h"
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QFileDialog>
@@ -40,7 +41,18 @@ void MainWindow::on_actionOpen_triggered()
     QString text =in.readAll();
     ui->textEdit->setText(text);
 }
-
+QString MainWindow:: opens(QString type){
+    QString filter = QString("%1 Files (*.%1);;All Files (*)").arg(type);
+    file_path = QFileDialog::getOpenFileName(this, "Choose a file", "c://", filter);
+    QFile file(file_path);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::warning(this, "Warning", "File not found!");
+        return "";
+    }
+    QTextStream in(&file);
+    QString text =in.readAll();
+    return text;
+}
 void MainWindow::on_actionSave_triggered()
 {
     QFile file(file_path);
@@ -212,3 +224,99 @@ void MainWindow::on_actionConvert_to_png_triggered() {
                                 tr("Failed to convert XML: %1").arg(e.what()));
         }
 }
+void MainWindow::saveas(QString text, QString type){
+QString filter = QString("%1 Files (*.%1);;All Files (*)").arg(type);
+QString filePath = QFileDialog::getSaveFileName(
+    this,
+    tr("Save As"),
+    QDir::homePath(), // Starting directory
+    filter // File type filters
+    );
+
+// Check if the user canceled the dialog
+if (filePath.isEmpty()) {
+    return; // User canceled; do nothing
+}
+
+// Ensure the file has the .xml extension
+if (!filePath.endsWith(type, Qt::CaseInsensitive)) {
+    filePath += type;
+}
+
+// Check if the file already exists
+if (QFile::exists(filePath)) {
+    // Ask the user for confirmation to overwrite
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(
+        this,
+        tr("Overwrite File"),
+        tr("The file \"%1\" already exists.\nDo you want to overwrite it?")
+            .arg(QDir::toNativeSeparators(filePath)),
+        QMessageBox::Yes | QMessageBox::No,
+        QMessageBox::No
+        );
+
+    if (reply != QMessageBox::Yes) {
+        return; // User chose not to overwrite; abort saving
+    }
+}
+
+QFile file(filePath);
+
+// Attempt to open the file for writing
+if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QMessageBox::warning(
+        this,
+        tr("Error"),
+        tr("Cannot open file for writing:\n%1.").arg(file.errorString())
+        );
+    return;
+}
+
+// Create a text stream to write to the file
+QTextStream out(&file);
+
+// Retrieve text from the QTextEdit widget
+//QString text = ui->textEdit->toPlainText();
+
+// Write the text to the file
+out << text;
+
+// Flush and close the file
+file.flush();
+file.close();
+
+// Inform the user that the file was saved successfully
+QMessageBox::information(
+    this,
+    tr("Success"),
+    tr("File \"%1\" has been saved successfully.").arg(QDir::toNativeSeparators(filePath))
+    );
+}
+void MainWindow::on_actionCompress_triggered()
+{
+    QString inputText = ui->textEdit->toPlainText();
+    if (inputText.isEmpty()) {
+        QMessageBox::warning(this, "Input Required", "Please enter text to compress.");
+        return;
+    }
+
+    std::string compressed = Compressor::compress(inputText.toStdString());
+    QString qCompressed = QString::fromStdString(compressed);
+    saveas(qCompressed,"comp");
+    qDebug() << "Compression successful.";
+}
+void MainWindow::on_actionDecompress_triggered()
+{   QString compressedText =opens("comp");
+    if (compressedText.isEmpty()) {
+        QMessageBox::warning(this, "Input Required", "Please enter compressed text to decompress.");
+        return;
+    }
+
+    std::string decompressed = Compressor::decompress(compressedText.toStdString());
+    QString qDecompressed = QString::fromStdString(decompressed);
+    ui->textEdit->setPlainText(qDecompressed);
+
+    qDebug() << "Decompression successful.";
+}
+

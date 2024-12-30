@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     DrawGraph.cpp \
+    compressor.cpp \
     main.cpp \
     mainwindow.cpp \
     xmlhighlighter.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     DrawGraph.h \
+    compressor.h \
     mainwindow.h \
     xmlhighlighter.h \
     xmltojsonconverter.h
