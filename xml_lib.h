@@ -15,7 +15,8 @@
 #include <regex>
 #include <memory>
 #include <sstream>
-
+#include <algorithm>
+#include <cctype>
 // Namespace usage is avoided in headers to prevent potential naming conflicts.
 // Use std:: prefix for standard library components.
 
@@ -28,7 +29,7 @@ void checkXMLConsistencyCMD(const std::string &inputFile,
 std::string checkXMLConsistencyGUI(const std::string &inputText, char flag);
 
 // Function to search posts by word or topic
-void postSearch(bool isCMD,
+std::string postSearch(bool isCMD,
                const std::string &xmlContent,
                const std::string &searchTerm,
                bool isWord);
@@ -39,7 +40,7 @@ void prettifyXML(const std::string& inputFile, const std::string& outputFile);
 
 // Function to get the most active user
 std::pair<int, std::string> getMostActiveUser();
-
+std::pair<std::string, std::string> getMostInfluentialUser();
 // Helper functions
 bool lineEmpty(const std::string &line);
 const char* getReqArg(int &i, int argc, char *argv[], const std::string &option);
@@ -49,9 +50,11 @@ std::string extractTagValue(const std::string &line, const std::string &tag);
 
 // Functions to manage users and followers
 void readXML(const std::string &fileName);
+void parse_string(std::string input);
 void addUser(int id, const std::string &name);
 void addFollower(int user, int follower);
-
+std::vector<int> getMutualFollowers(const std::vector<int> &ids);
+std::vector<int> suggestUsersToFollow(int userId);
 // Functions to minify XML
 std::string minifyXMLLine(const std::string &xmlContent);
 void minifyXMLFile(const std::string &inputFileName, const std::string &outputFileName);

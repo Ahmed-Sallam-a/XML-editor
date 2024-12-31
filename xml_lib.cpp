@@ -393,8 +393,8 @@ std::string checkXMLConsistencyGUI(const std::string &inputText, char flag)
 }
 
 // Function to search posts by word or topic
-void postSearch(bool isCMD, const string &xmlContent, const string &searchTerm, bool isWord)
-{
+std::string postSearch(bool isCMD, const string &xmlContent, const string &searchTerm, bool isWord)
+{   string out="";
     string line;
     vector<string> matchingPosts;
     bool inPost = false;
@@ -415,7 +415,7 @@ void postSearch(bool isCMD, const string &xmlContent, const string &searchTerm, 
         if (!static_cast<ifstream *>(inputStream.get())->is_open())
         {
             cerr << "Error opening file!" << endl;
-            return;
+            return "Error opening file!";
         }
     }
     else
@@ -447,14 +447,19 @@ void postSearch(bool isCMD, const string &xmlContent, const string &searchTerm, 
         }
     }
 
-    if (matchingPosts.empty())
-        cout << "No posts found containing the " << (isWord ? "word" : "topic") << ": " << searchTerm << endl;
-    else
-    {
-        cout << "Posts containing the " << (isWord ? "word" : "topic") << ": " << searchTerm << endl;
-        for (const auto &post : matchingPosts)
-            cout << post << endl;
+    if (matchingPosts.empty()){
+        string type = (isWord ? "word" : "topic");
+        out= "No posts found containing the "+ type+ ": " + searchTerm+"\n" ;
     }
+    else
+    {   string type=(isWord ? "word" : "topic");
+        out= "Posts containing the " + type + ": " + searchTerm + "\n";
+        for (const auto &post : matchingPosts){
+            out+=post;
+            out+="\n";
+        }
+    }
+    return out;
 }
 
 // Function to prettify XML and save to output file
@@ -602,6 +607,38 @@ std::string prettifyXML(const std::string& inputFile) {
 }
 
 // Function to read the XML file and build user and follower mappings
+void parse_string(string input)
+{
+    stringstream ss(input);
+    string line;
+    int currentUserId = -1;
+    while (getline(ss, line))
+    {
+        // check ID tag
+        if (line.find("<id>") != string::npos)
+        {
+            int id = stoi(extractTagValue(line, "id"));
+            // assign the new user
+            if (currentUserId == -1)
+                currentUserId = id;
+
+            // adding follower to the current user
+            else
+                adjList[currentUserId].insert(id);
+        }
+        // check name tag
+        else if (line.find("<name>") != string::npos)
+        {
+            // mapping the current user id to the name
+            string name = extractTagValue(line, "name");
+            userNames[currentUserId] = name;
+        }
+        // reset for new user
+        else if (line.find("</user>") != string::npos)
+            currentUserId = -1;
+    }
+}
+
 void readXML(const string &fileName){
     ifstream file (fileName);
     if (!file.is_open()) {
@@ -751,3 +788,46 @@ string minifyXMLFile(const string &inputFileName) {
     }
     return minifiedContent;
 }
+pair<string, string> getMostInfluentialUser()
+{
+    int maxFollowers = 0, mostInfluential = -1;
+    for (const auto &entry : adjList)
+    {
+        if (entry.second.size() > maxFollowers)
+        {
+            maxFollowers = entry.second.size();
+            mostInfluential = entry.first;
+        }
+    }
+    string mostInfluential_string = to_string(mostInfluential);
+
+    return {mostInfluential_string, userNames[mostInfluential]};
+}
+vector<int> getMutualFollowers(const vector<int> &ids) {
+    if (ids.empty()) return {};
+    unordered_set<int> mutualFollowers = adjList[ids[0]];
+    for (size_t i = 1; i < ids.size(); ++i) {
+        unordered_set<int> currentFollowers = adjList[ids[i]];
+        for (auto it = mutualFollowers.begin(); it != mutualFollowers.end();) {
+            if (currentFollowers.find(*it) == currentFollowers.end())
+                it = mutualFollowers.erase(it);
+            else
+                ++it;
+        }
+    }
+    return vector<int>(mutualFollowers.begin(), mutualFollowers.end());
+}
+
+// Function to suggest users to followers
+vector<int> suggestUsersToFollow(int userId) {
+    unordered_set<int> suggestions;
+    for (int follower : adjList[userId]) {
+        for (int followerOfFollower : adjList[follower]) {
+            if (followerOfFollower != userId && !adjList[userId].count(followerOfFollower)) {
+                suggestions.insert(followerOfFollower);
+            }
+        }
+    }
+    return vector<int>(suggestions.begin(), suggestions.end());
+}
+

@@ -9,6 +9,7 @@
 #include "xmltojsonconverter.h"
 #include "DrawGraph.h"
 #include "xml_lib.h"
+#include <QInputDialog>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -354,6 +355,10 @@ void MainWindow::on_action_Minify_triggered()
 void MainWindow::on_actionMost_Active_user_triggered()
 {
     std::string Text=ui->textEdit->toPlainText().toStdString();
+    parse_string(Text);
+    std::pair<int, std::string> most_active = getMostActiveUser();
+    QString mostActive = QString::fromStdString(most_active.second);
+    QMessageBox::information(this, "Most Active User", "The most active user is: "+mostActive);
 
 
 }
@@ -361,31 +366,107 @@ void MainWindow::on_actionMost_Active_user_triggered()
 
 void MainWindow::on_actionMost_influencial_triggered()
 {
-
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    parse_string(Text);
+    std::pair<std::string, std::string> most_influencial = getMostInfluentialUser();
+    QString mostinf = QString::fromStdString(most_influencial.second);
+    QMessageBox::information(this, "Most Influencial User", "The most influencial user is: "+mostinf);
 }
 
 
 void MainWindow::on_actionMutual_followers_triggered()
 {
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    parse_string(Text);
+    QString userInput = QInputDialog::getText(this, "Mutual followers", "Enter list of users separted by commas: ", QLineEdit::Normal);
+    std::vector<int> usersID=parseNumbers(userInput.toStdString());
+    std::vector<int> IDS=getMutualFollowers(usersID);
+    std::string out = "Mutual followers are: "+ vectorToString(IDS);
+    QMessageBox::information(this, "Mutual followers",QString::fromStdString(out));
+
+
 
 }
+std::vector<int>MainWindow:: parseNumbers(const std::string& str, char delimiter) {
+    std::vector<int> numbers;
+    std::stringstream ss(str);
+    std::string item;
+    try {
+        while (std::getline(ss, item, delimiter)) {
+            // Remove whitespace
+            item.erase(std::remove_if(item.begin(), item.end(),
+                                      [](unsigned char c) { return std::isspace(c); }),
+                       item.end());
+            if (!item.empty()) {
+                numbers.push_back(std::stoi(item));
+            }
+        }
+    }
+    catch (const std::invalid_argument& e) {
+        std::cerr << "Invalid number format in input string" << std::endl;
+    }
+    catch (const std::out_of_range& e) {
+        std::cerr << "Number out of range in input string" << std::endl;
+    }
 
+    return numbers;
+}
+std::string MainWindow::vectorToString(const std::vector<int>& vec, const std::string& delimiter) {
+    std::stringstream ss;
+    for (size_t i = 0; i < vec.size(); ++i) {
+        if (i != 0) {
+            ss << delimiter;
+        }
+        ss << vec[i];
+    }
+    return ss.str();
+}
 
 void MainWindow::on_actionSuggest_followers_triggered()
 {
-
-}
+    std::string Text=ui->textEdit->toPlainText().toStdString();
+    parse_string(Text);
+    QString userInput = QInputDialog::getText(this, "Suggested followers", "Enter the user id: ", QLineEdit::Normal);
+    std::vector<int> usersID=parseNumbers(userInput.toStdString());
+    if(usersID.size()>1){
+        QMessageBox::warning(this, "Error!","enter one user id");
+    }
+    else{
+    std::vector<int> IDS=suggestUsersToFollow(usersID[0]);
+    std::string out = "Suggested users are: "+ vectorToString(IDS);
+    QMessageBox::information(this, "Suggested followers",QString::fromStdString(out));
+    }
+    }
 
 
 void MainWindow::on_actionWord_search_triggered()
 {
+    QString userInput = QInputDialog::getText(this, "Word search", "Enter a word:", QLineEdit::Normal);
+    std::string searchResult=postSearch(false,
+               ui->textEdit->toPlainText().toStdString(),
+               userInput.toStdString(),
+               true);
+    if(!searchResult.substr(0,34).compare("No posts found containing the word")){
+        QMessageBox::warning(this, "Warning!",QString::fromStdString(searchResult));
+    }
+    else
+        ui->textEdit->setText(QString::fromStdString(searchResult));
 
 }
 
 
 void MainWindow::on_actionTopic_search_triggered()
 {
-
+    QString userInput = QInputDialog::getText(this, "Topic search", "Enter a topic: ", QLineEdit::Normal);
+    std::string searchResult=postSearch(false,
+                ui->textEdit->toPlainText().toStdString(),
+                userInput.toStdString(),
+                false);
+    if(!searchResult.substr(0,35).compare("No posts found containing the topic")){
+        QMessageBox::warning(this, "Warning!",QString::fromStdString(searchResult));
+    }
+    else
+        ui->textEdit->setText(QString::fromStdString(searchResult));
 }
 
 

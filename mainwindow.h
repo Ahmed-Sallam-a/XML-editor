@@ -65,7 +65,8 @@ private slots:
     void on_actionTopic_search_triggered();
 
     void on_actionFix_errors_triggered();
-
+    std::vector<int> parseNumbers(const std::string& str, char delimiter = ',');
+    std::string vectorToString(const std::vector<int>& vec, const std::string& delimiter=",");
 private:
     Ui::MainWindow *ui;
     QString file_path;
