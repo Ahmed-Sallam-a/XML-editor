@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
     string command = argv[1];
     bool fixErrors = false;
     bool isWordSearch = true;
+    vector<int> ids;
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -51,9 +52,12 @@ int main(int argc, char *argv[])
             searchTerm = getReqArg(i, argc, argv, "-t");
             isWordSearch = false;
         }
-        else if (arg == "-f")
+        else if (arg == "-f"){
             fixErrors = true;
-
+        }
+        else if(arg == "-ids"){
+            ids = parseStringToVector(argv[i+1]);
+        }
         else
         {
             cerr << "Unknown option: " << arg << endl;
@@ -82,7 +86,7 @@ int main(int argc, char *argv[])
     else if (command == "mini")
     {
         // Implement minify functionality
-        prettifyXML(inputFile, outputFile);
+        minifyXMLFile(inputFile, outputFile);
     }
     else if (command == "compress")
     {
@@ -115,8 +119,15 @@ int main(int argc, char *argv[])
     }
     else if (command == "mutual")
     {
-        // Placeholder for mutual functionality
-        cout << "Mutual functionality is not implemented yet." << endl;
+        readXML(inputFile);
+        vector<int> mutualFollowers = getMutualFollowers(ids);
+        if (mostActive.first != -1){
+            cout << "Mutual friends are: "
+            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
+            cout<<endl;
+        }
+        else
+            cout << "No mutual followers found" <<endl;
     }
     else if (command == "suggest")
     {

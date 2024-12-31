@@ -31,6 +31,20 @@ const char *getReqArg(int &i, int argc, char *argv[], const string &option)
     }
 }
 
+// Function to parse the string to vector of numbers
+vector<int> parseStringToVector(const string& str) {
+    vector<int> result;
+    stringstream ss(str);
+    string token;
+
+    // Use ',' as the delimiter
+    while (getline(ss, token, ',')) {
+        result.push_back(stoi(token)); // Convert token to integer and add to vector
+    }
+
+    return result;
+}
+
 // Function to extract the value of a specific XML tag from a line
 string extractTagValue(const string &line, const string &tag)
 {
