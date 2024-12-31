@@ -556,26 +556,18 @@ void prettifyXML(const string &inputFile, const string &outputFile)
 
                 // Handle closing tags
                 if (tag[1] == '/')
-                {
                     indentLevel--;
-                }
 
                 if (!secondFlag)
-                {
                     // Write the tag with proper indentation
                     for (int i = 0; i < indentLevel; ++i)
-                    {
                         outputStream << "  ";
-                    }
-                }
 
                 outputStream << tag;
 
                 // Handle opening tags (not self-closing)
                 if (tag[1] != '/' && tag[tag.size() - 2] != '/')
-                {
                     indentLevel++;
-                }
 
                 pos = endPos + 1;
             }
@@ -587,6 +579,9 @@ void prettifyXML(const string &inputFile, const string &outputFile)
 
                 if (!text.empty())
                 {
+                    if (!firstFlag)
+                        for (int i = 0; i < indentLevel; ++i)
+                            outputStream << "  ";
                     outputStream << text;
                 }
 
@@ -637,26 +632,18 @@ std::string prettifyXML(const std::string &inputFile)
 
                 // Handle closing tags
                 if (tag[1] == '/')
-                {
                     indentLevel--;
-                }
 
                 if (!secondFlag)
-                {
                     // Write the tag with proper indentation
                     for (int i = 0; i < indentLevel; ++i)
-                    {
                         output += "  ";
-                    }
-                }
 
                 output += tag;
 
                 // Handle opening tags (not self-closing)
                 if (tag[1] != '/' && tag[tag.size() - 2] != '/')
-                {
                     indentLevel++;
-                }
 
                 pos = endPos + 1;
             }
@@ -667,9 +654,7 @@ std::string prettifyXML(const std::string &inputFile)
                 string text = line.substr(pos, nextTagPos - pos);
 
                 if (!text.empty())
-                {
                     output += text;
-                }
 
                 pos = nextTagPos;
             }
