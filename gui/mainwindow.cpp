@@ -347,7 +347,7 @@ void MainWindow::on_actionPrettify_triggered()
 void MainWindow::on_action_Minify_triggered()
 {
     std::string Text=ui->textEdit->toPlainText().toStdString();
-    std::string minitext= minifyXMLLine(Text);
+    std::string minitext= minifyXMLFile(Text);
     ui->textEdit->setPlainText(QString::fromStdString(minitext));
 }
 
