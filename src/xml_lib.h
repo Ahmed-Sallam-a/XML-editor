@@ -19,6 +19,13 @@
 // Namespace usage is avoided in headers to prevent potential naming conflicts.
 // Use std:: prefix for standard library components.
 
+// Helper functions
+bool lineEmpty(const std::string &line);
+vector<int> parseStringToVector(const string &str);
+const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
+// Function to extract tag value from a line
+std::string extractTagValue(const std::string &line, const std::string &tag);
+
 // Function to check XML consistency and fix errors for command line
 void checkXMLConsistencyCMD(const std::string &inputFile,
                             const std::string &outputFile,
@@ -26,8 +33,6 @@ void checkXMLConsistencyCMD(const std::string &inputFile,
 
 // Function to check XML consistency and fix errors for GUI
 std::string checkXMLConsistencyGUI(const std::string &inputText, char flag);
-
-const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
 
 // Function to search posts by word or topic
 std::vector<std::string> postSearch(bool isCMD,
@@ -41,12 +46,6 @@ void prettifyXML(const std::string &inputFile, const std::string &outputFile);
 
 // Function to get the most active user
 std::pair<int, std::string> getMostActiveUser();
-
-// Helper functions
-bool lineEmpty(const std::string &line);
-
-// Function to extract tag value from a line
-std::string extractTagValue(const std::string &line, const std::string &tag);
 
 // Functions to manage users and followers
 void readXML(const std::string &fileName);

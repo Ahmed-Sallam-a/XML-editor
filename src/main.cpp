@@ -124,34 +124,34 @@ int main(int argc, char *argv[])
     {
         cout << "Most Influencer functionality is not implemented yet." << endl;
     }
-    // else if (command == "mutual")
-    // {
-    //     readXML(inputFile);
-    //     vector<int> mutualFollowers = getMutualFollowers(ids);
-    //     if (mostActive.size() != 0)
-    //     {
-    //         cout << "Mutual friends are: ";
-    //         for (int i = 0; i < mutualFollowers.size(); i++)
-    //             cout << mutualFollowers[i] << " ";
-    //         cout << endl;
-    //     }
-    //     else
-    //         cout << "No mutual followers found" << endl;
-    // }
-    // else if (command == "suggest")
-    // {
-    //     readXML(inputFile);
-    //     vector<int> suggestions = suggestUsersToFollow(suggestedId);
-    //     if (suggestions.size() != 0)
-    //     {
-    //         cout << "Suggested users are: ";
-    //         for (int i = 0; i < mutualFollowers.size(); i++)
-    //             cout << mutualFollowers[i] << " ";
-    //         cout << endl;
-    //     }
-    //     else
-    //         cout << "No suggestions found" << endl;
-    // }
+    else if (command == "mutual")
+    {
+        readXML(inputFile);
+        vector<int> mutualFollowers = getMutualFollowers(ids);
+        if (mostActive.size() != 0)
+        {
+            cout << "Mutual friends are: ";
+            for (int i = 0; i < mutualFollowers.size(); i++)
+                cout << mutualFollowers[i] << " ";
+            cout << endl;
+        }
+        else
+            cout << "No mutual followers found" << endl;
+    }
+    else if (command == "suggest")
+    {
+        readXML(inputFile);
+        vector<int> suggestions = suggestUsersToFollow(suggestedId);
+        if (suggestions.size() != 0)
+        {
+            cout << "Suggested users are: ";
+            for (int i = 0; i < mutualFollowers.size(); i++)
+                cout << mutualFollowers[i] << " ";
+            cout << endl;
+        }
+        else
+            cout << "No suggestions found" << endl;
+    }
     else
     {
         cerr << "Unknown command: " << command << endl;

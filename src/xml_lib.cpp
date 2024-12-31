@@ -12,7 +12,21 @@ bool lineEmpty(const string &line)
     return all_of(line.begin(), line.end(), [](char c)
                   { return isspace(c); });
 }
+// Function to parse the string to vector of numbers
+vector<int> parseStringToVector(const string &str)
+{
+    vector<int> result;
+    stringstream ss(str);
+    string token;
 
+    // Use ',' as the delimiter
+    while (getline(ss, token, ','))
+    {
+        result.push_back(stoi(token)); // Convert token to integer and add to vector
+    }
+
+    return result;
+}
 // function to get the required argument for a command-line option
 const char *getReqArg(int &i, int argc, char *argv[], const string &option)
 {
@@ -25,7 +39,6 @@ const char *getReqArg(int &i, int argc, char *argv[], const string &option)
         exit(1);
     }
 }
-
 // Function to extract the value of a specific XML tag from a line
 string extractTagValue(const string &line, const string &tag)
 {
