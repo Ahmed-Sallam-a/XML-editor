@@ -4,8 +4,8 @@
         <name>Ahmed Ali</name>
         <posts>
             <post>
-                <body
-                    The global economy is facing unprecedented challenges due to the pandemic.
+                <body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </body>
                 <topics>
                     <topic>
@@ -18,7 +18,7 @@
             </post>
             <post>
                 <body>
-                    Investing in renewable energy is crucial for sustainable development.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </body>
                 <topics>
                     <topic>
@@ -32,7 +32,7 @@
                 <id>2</id>
             </follower>
             <follower>
-                <id>3</id>
+                <id>4</id>
             </follower>
         </followers>
     </user>
@@ -42,7 +42,7 @@
         <posts>
             <post>
                 <body>
-                    Online education platforms have seen a significant rise in users.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </body>
                 <topics>
                     <topic>
@@ -55,6 +55,9 @@
             <follower>
                 <id>1</id>
             </follower>
+            <follower>
+                <id>4</id>
+            </follower>
         </followers>
     </user>
     <user>
@@ -63,7 +66,7 @@
         <posts>
             <post>
                 <body>
-                    The sports industry is adapting to new norms in the post-pandemic world.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </body>
                 <topics>
                     <topic>
@@ -75,6 +78,36 @@
         <followers>
             <follower>
                 <id>1</id>
+            </follower>
+            <follower>
+                <id>4</id>
+            </follower>
+        </followers>
+    </user>
+    <user>
+        <id>4</id>
+        <name>Ahmed Samir Helmy</name>
+        <posts>
+            <post>
+                <body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </body>
+                <topics>
+                    <topic>
+                        sports
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+            <follower>
+                <id>1</id>
+            </follower>
+            <follower>
+                <id>2</id>
+            </follower>
+            <follower>
+                <id>3</id>
             </follower>
         </followers>
     </user>

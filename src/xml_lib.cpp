@@ -21,12 +21,11 @@ vector<int> parseStringToVector(const string &str)
 
     // Use ',' as the delimiter
     while (getline(ss, token, ','))
-    {
         result.push_back(stoi(token)); // Convert token to integer and add to vector
-    }
 
     return result;
 }
+
 // function to get the required argument for a command-line option
 const char *getReqArg(int &i, int argc, char *argv[], const string &option)
 {
@@ -403,12 +402,16 @@ std::string checkXMLConsistencyGUI(const std::string &inputText, char flag)
 }
 
 // Function to get the mutual followers between users
-vector<int> getMutualFollowers(const vector<int> &ids) {
-    if (ids.empty()) return {};
+vector<int> getMutualFollowers(const vector<int> &ids)
+{
+    if (ids.empty())
+        return {};
     unordered_set<int> mutualFollowers = adjList[ids[0]];
-    for (size_t i = 1; i < ids.size(); ++i) {
+    for (size_t i = 1; i < ids.size(); ++i)
+    {
         unordered_set<int> currentFollowers = adjList[ids[i]];
-        for (auto it = mutualFollowers.begin(); it != mutualFollowers.end();) {
+        for (auto it = mutualFollowers.begin(); it != mutualFollowers.end();)
+        {
             if (currentFollowers.find(*it) == currentFollowers.end())
                 it = mutualFollowers.erase(it);
             else
@@ -419,11 +422,15 @@ vector<int> getMutualFollowers(const vector<int> &ids) {
 }
 
 // Function to suggest users to follow
-vector<int> suggestUsersToFollow(int userId) {
+vector<int> suggestUsersToFollow(int userId)
+{
     unordered_set<int> suggestions;
-    for (int follower : adjList[userId]) {
-        for (int followerOfFollower : adjList[follower]) {
-            if (followerOfFollower != userId && !adjList[userId].count(followerOfFollower)) {
+    for (int follower : adjList[userId])
+    {
+        for (int followerOfFollower : adjList[follower])
+        {
+            if (followerOfFollower != userId && !adjList[userId].count(followerOfFollower))
+            {
                 suggestions.insert(followerOfFollower);
             }
         }

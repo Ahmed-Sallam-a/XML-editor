@@ -17,7 +17,7 @@
 
 //------------------------Helper Functions------------------------//
 bool lineEmpty(const std::string &line);
-vector<int> parseStringToVector(const string &str);
+std::vector<int> parseStringToVector(const std::string &str);
 const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
 std::string extractTagValue(const std::string &line, const std::string &tag);
 
@@ -49,6 +49,10 @@ void addFollower(int user, int follower);
 std::string minifyXMLLine(const std::string &xmlContent);
 void minifyXMLFile(const std::string &inputFileName, const std::string &outputFileName);
 std::string minifyXMLFile(const std::string &inputFileName); // For GUI
+
+// Functions to Suggest users to follow and get mutual followers
+std::vector<int> suggestUsersToFollow(int userId);
+std::vector<int> getMutualFollowers(const std::vector<int> &ids);
 
 // Global variables
 // These are declared here and should be defined in exactly one source (.cpp) file.

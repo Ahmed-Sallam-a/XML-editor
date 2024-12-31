@@ -1,7 +1,3 @@
-//
-// Created by ahmed on 12/30/2024.
-//
-// Main function to handle command-line operations
 #include "xml_lib.h"
 #include "xmltojsonconverter.h"
 #include "DrawGraph.h"
@@ -60,11 +56,9 @@ int main(int argc, char *argv[])
             fixErrors = true;
 
         else if (arg == "-ids")
-        {
-            ids = parseStringToVector(argv[i + 1]);
-        }
+            ids = parseStringToVector(getReqArg(i, argc, argv, "-ids"));
 
-        else if (arg == "-id") // -id 1
+        else if (arg == "-id")
             suggestedId = stoi(getReqArg(i, argc, argv, "-id"));
 
         else
@@ -116,7 +110,7 @@ int main(int argc, char *argv[])
         readXML(inputFile);
         pair<int, string> mostActive = getMostActiveUser();
         if (mostActive.first != -1)
-            cout << "Most Active User: ID=" << mostActive.first << ", Name=" << mostActive.second << endl;
+            cout << "Most Active User: ID = " << mostActive.first << ", Name=" << mostActive.second << endl;
         else
             cout << "No active users found." << endl;
     }
@@ -130,9 +124,9 @@ int main(int argc, char *argv[])
         vector<int> mutualFollowers = getMutualFollowers(ids);
         if (mutualFollowers.size() != 0)
         {
-            cout << "Mutual friends are: ";
-            for (int i = 0; i < mutualFollowers.size(); i++)
-                cout << mutualFollowers[i] << " ";
+            cout << "Mutual followers are: ";
+            for (int follower : mutualFollowers)
+                cout << follower << " ";
             cout << endl;
         }
         else
@@ -145,8 +139,8 @@ int main(int argc, char *argv[])
         if (suggestions.size() != 0)
         {
             cout << "Suggested users are: ";
-            for (int i = 0; i < suggestions.size(); i++)
-                cout << suggestions[i] << " ";
+            for (int suggestion : suggestions)
+                cout << suggestion << " ";
             cout << endl;
         }
         else
