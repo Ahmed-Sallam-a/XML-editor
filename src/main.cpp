@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
     bool isWordSearch = true;
     int suggestedId;
     vector<int> ids;
-    readXML(inputFile);
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -97,15 +96,14 @@ int main(int argc, char *argv[])
     }
 
     else if (command == "compress")
-    {
-        cout << "Compress functionality is not implemented yet." << endl;
-    }
+        compress(inputFile, outputFile);
+
     else if (command == "decompress")
-    {
-        cout << "Decompress functionality is not implemented yet." << endl;
-    }
+        decompress(inputFile, outputFile);
+
     else if (command == "mutual")
     {
+        readXML(inputFile);
         vector<int> mutualFollowers = getMutualFollowers(ids);
         if (mutualFollowers.size() != 0)
         {
@@ -119,6 +117,7 @@ int main(int argc, char *argv[])
     }
     else if (command == "suggest")
     {
+        readXML(inputFile);
         vector<int> suggestions = suggestUsersToFollow(suggestedId);
         if (suggestions.size() != 0)
         {
@@ -133,15 +132,21 @@ int main(int argc, char *argv[])
 
     else if (command == "most_active")
     {
+        readXML(inputFile);
         pair<int, string> mostActive = getMostActiveUser();
         if (mostActive.first != -1)
-            cout << "Most Active User: ID = " << mostActive.first << ", Name=" << mostActive.second << endl;
+            cout << "Most Active User | ID : " << mostActive.first << ", Name : " << mostActive.second << endl;
         else
             cout << "No active users found." << endl;
     }
     else if (command == "most_influencer")
     {
-        cout << "Most Influencer functionality is not implemented yet." << endl;
+        readXML(inputFile);
+        pair<int, string> mostInfluential = getMostInfluentialUser();
+        if (mostInfluential.first != -1)
+            cout << "Most Influential User | ID = " << mostInfluential.first << ", Name : " << mostInfluential.second << endl;
+        else
+            cout << "No influential users found." << endl;
     }
 
     else if (command == "draw")

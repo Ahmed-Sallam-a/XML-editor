@@ -675,6 +675,7 @@ void readXML(const string &fileName)
         cerr << "Error: Could not open file " << fileName << endl;
         return;
     }
+
     string line;
     int currentUserId = -1;
     while (getline(file, line))
@@ -836,41 +837,43 @@ string minifyXMLFile(const string &inputFileName)
     }
     return minifiedContent;
 }
-string parseXMLToString(const string& filePath) {
-    ifstream xmlFile(filePath);
-    if (!xmlFile.is_open()) {
-        cerr << "Error: Unable to open the file: " << filePath << endl;
-        return "";
-    }
 
+string parseXMLToString(const string &filePath)
+{
+    ifstream xmlFile(filePath);
     string line, content, result;
-    while (getline(xmlFile, line)) {
-        content += line; // Read the file line by line into a single string
-    }
+
+    while (getline(xmlFile, line))
+        content += line;
     xmlFile.close();
 
     return content;
 }
-void compress(const string& filePath, const string& outputFilePath) {
+
+void compress(const string &filePath, const string &outputFilePath)
+{
     string input = parseXMLToString(filePath);
     unordered_map<string, int> stringTable;
     int code = 256; // Start with the first available code after ASCII
 
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 256; i++)
         stringTable[string(1, char(i))] = i; // Add single characters
-    }
+
     string P = "";
     P += input[0]; // First input character
     vector<int> outputCodes;
 
-    for (size_t i = 1; i < input.length(); i++) {
+    for (size_t i = 1; i < input.length(); i++)
+    {
         char C = input[i]; // Next input character
-        if (stringTable.find(P + C) != stringTable.end()) {
+        if (stringTable.find(P + C) != stringTable.end())
             P = P + C; // P + C is in the table
-        } else {
+
+        else
+        {
             outputCodes.push_back(stringTable[P]); // Output the code for P
-            stringTable[P + C] = code++; // Add P + C to the table
-            P = C; // Set P to C
+            stringTable[P + C] = code++;           // Add P + C to the table
+            P = C;                                 // Set P to C
         }
     }
 
@@ -879,19 +882,26 @@ void compress(const string& filePath, const string& outputFilePath) {
 
     // Write the compressed data to a .comp file
     ofstream compFile(outputFilePath, ios::binary);
-    if (compFile.is_open()) {
-        for (int code : outputCodes) {
-            compFile.write(reinterpret_cast<const char*>(&code), sizeof(code));
+    if (compFile.is_open())
+    {
+        for (int code : outputCodes)
+        {
+            compFile.write(reinterpret_cast<const char *>(&code), sizeof(code));
         }
         compFile.close();
         cout << "Compressed data written to output.comp\n";
-    } else {
+    }
+    else
+    {
         cerr << "Error: Unable to open the .comp file for writing.\n";
     }
 }
-void decompress(const string& inputFilePath, const string& outputFilePath) {
+
+void decompress(const string &inputFilePath, const string &outputFilePath)
+{
     ifstream compFile(inputFilePath, ios::binary);
-    if (!compFile.is_open()) {
+    if (!compFile.is_open())
+    {
         cerr << "Error: Unable to open the .comp file for reading: " << inputFilePath << endl;
         return;
     }
@@ -899,28 +909,30 @@ void decompress(const string& inputFilePath, const string& outputFilePath) {
     // Read the compressed data into a vector of integers
     vector<int> compressedCodes;
     int code;
-    while (compFile.read(reinterpret_cast<char*>(&code), sizeof(code))) {
+    while (compFile.read(reinterpret_cast<char *>(&code), sizeof(code)))
         compressedCodes.push_back(code);
-    }
     compFile.close();
 
     // Initialize the string table with single character strings
     unordered_map<int, string> stringTable;
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 256; i++)
         stringTable[i] = string(1, char(i)); // Add single characters
-    }
 
     // Decompression logic
-    int tableIndex = 256; // Next available code index
+    int tableIndex = 256;                              // Next available code index
     string previous = stringTable[compressedCodes[0]]; // First code
     string decompressed = previous;
-    for (size_t i = 1; i < compressedCodes.size(); i++) {
+    for (size_t i = 1; i < compressedCodes.size(); i++)
+    {
         string current;
-        if (stringTable.find(compressedCodes[i]) != stringTable.end()) {
+        if (stringTable.find(compressedCodes[i]) != stringTable.end())
             current = stringTable[compressedCodes[i]];
-        } else if (compressedCodes[i] == tableIndex) {
+
+        else if (compressedCodes[i] == tableIndex)
             current = previous + previous[0]; // Special case for new entries
-        } else {
+
+        else
+        {
             cerr << "Error: Invalid code encountered during decompression.\n";
             return;
         }
@@ -932,28 +944,47 @@ void decompress(const string& inputFilePath, const string& outputFilePath) {
         previous = current;
     }
 
+    string printedDecompressed;
+    for (size_t i = 0; i < decompressed.size(); i++)
+    {
+        printedDecompressed += decompressed[i];
+        bool isCurrentClosed = (decompressed[i] == '>');
+        bool isNextOpen = (i + 1 < decompressed.size() && decompressed[i + 1] == '<');
+
+        // If '>' is immediately followed by '<', add one newline
+        if (isCurrentClosed && isNextOpen)
+            printedDecompressed += '\n';
+        // Otherwise, give a newline after '>' or before the next '<'
+        else if (isCurrentClosed)
+            printedDecompressed += '\n';
+        else if (isNextOpen)
+            printedDecompressed += '\n';
+    }
+
     // Write the decompressed data to an XML file
     ofstream xmlFile(outputFilePath);
-    if (xmlFile.is_open()) {
-       // xmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    if (xmlFile.is_open())
+    {
+        // xmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         xmlFile << "<decompressedData>\n";
-        xmlFile << "  <content>" << decompressed << "</content>\n";
+        xmlFile << "  <content>" << printedDecompressed << "</content>\n";
         xmlFile << "</decompressedData>\n";
         xmlFile.close();
         cout << "Decompressed data written to " << outputFilePath << endl;
-    } else {
+    }
+    else
         cerr << "Error: Unable to open the XML file for writing: " << outputFilePath << endl;
-    }
 }
-//// Function to get the most influential user based on followers
-  pair<int,string> getMostInfluentialUser() {
-        int maxFollowers = 0, mostInfluential = -1;
-        for (const auto &entry : adjList) {
-            if (entry.second.size() > maxFollowers) {
-                maxFollowers = entry.second.size();
-                mostInfluential = entry.first;
-            }
-        }
-        return {mostInfluential,userNames[mostInfluential]};
-    }
 
+// Function to get the most influential user based on followers
+pair<int, string> getMostInfluentialUser()
+{
+    int maxFollowers = 0, mostInfluential = -1;
+    for (const auto &entry : adjList)
+        if (entry.second.size() > maxFollowers)
+        {
+            maxFollowers = entry.second.size();
+            mostInfluential = entry.first;
+        }
+    return {mostInfluential, userNames[mostInfluential]};
+}
