@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     bool isWordSearch = true;
     int suggestedId;
     vector<int> ids;
+    readXML(inputFile);
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -78,6 +79,9 @@ int main(int argc, char *argv[])
     else if (command == "format")
         prettifyXML(inputFile, outputFile);
 
+    else if (command == "mini")
+        minifyXMLFile(inputFile, outputFile);
+
     else if (command == "json")
     {
         if (XmlToJsonConverter::processFiles(inputFile, outputFile))
@@ -91,8 +95,6 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-    else if (command == "mini")
-        minifyXMLFile(inputFile, outputFile);
 
     else if (command == "compress")
     {
@@ -102,12 +104,35 @@ int main(int argc, char *argv[])
     {
         cout << "Decompress functionality is not implemented yet." << endl;
     }
-    else if (command == "draw")
-        processXMLToPNG(inputFile, outputFile);
+    else if (command == "mutual")
+    {
+        vector<int> mutualFollowers = getMutualFollowers(ids);
+        if (mutualFollowers.size() != 0)
+        {
+            cout << "Mutual followers are: ";
+            for (int follower : mutualFollowers)
+                cout << "ID: " << follower << ", Name: " << userNames[follower] << "\t";
+            cout << endl;
+        }
+        else
+            cout << "No mutual followers found" << endl;
+    }
+    else if (command == "suggest")
+    {
+        vector<int> suggestions = suggestUsersToFollow(suggestedId);
+        if (suggestions.size() != 0)
+        {
+            cout << "Suggested users are: ";
+            for (int suggestion : suggestions)
+                cout << "ID: " << suggestion << ", Name: " << userNames[suggestion] << "\t";
+            cout << endl;
+        }
+        else
+            cout << "No suggestions found" << endl;
+    }
 
     else if (command == "most_active")
     {
-        readXML(inputFile);
         pair<int, string> mostActive = getMostActiveUser();
         if (mostActive.first != -1)
             cout << "Most Active User: ID = " << mostActive.first << ", Name=" << mostActive.second << endl;
@@ -118,34 +143,10 @@ int main(int argc, char *argv[])
     {
         cout << "Most Influencer functionality is not implemented yet." << endl;
     }
-    else if (command == "mutual")
-    {
-        readXML(inputFile);
-        vector<int> mutualFollowers = getMutualFollowers(ids);
-        if (mutualFollowers.size() != 0)
-        {
-            cout << "Mutual followers are: ";
-            for (int follower : mutualFollowers)
-                cout << follower << " ";
-            cout << endl;
-        }
-        else
-            cout << "No mutual followers found" << endl;
-    }
-    else if (command == "suggest")
-    {
-        readXML(inputFile);
-        vector<int> suggestions = suggestUsersToFollow(suggestedId);
-        if (suggestions.size() != 0)
-        {
-            cout << "Suggested users are: ";
-            for (int suggestion : suggestions)
-                cout << suggestion << " ";
-            cout << endl;
-        }
-        else
-            cout << "No suggestions found" << endl;
-    }
+
+    else if (command == "draw")
+        processXMLToPNG(inputFile, outputFile);
+
     else
     {
         cerr << "Unknown command: " << command << endl;
