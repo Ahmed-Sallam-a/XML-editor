@@ -727,6 +727,35 @@ pair<int, string> getMostActiveUser()
         return {-1, ""};
 }
 
+// Function to get the mutual followers between users
+vector<int> getMutualFollowers(const vector<int> &ids) {
+    if (ids.empty()) return {};
+    unordered_set<int> mutualFollowers = adjList[ids[0]];
+    for (size_t i = 1; i < ids.size(); ++i) {
+        unordered_set<int> currentFollowers = adjList[ids[i]];
+        for (auto it = mutualFollowers.begin(); it != mutualFollowers.end();) {
+            if (currentFollowers.find(*it) == currentFollowers.end())
+                it = mutualFollowers.erase(it);
+            else
+                ++it;
+        }
+    }
+    return vector<int>(mutualFollowers.begin(), mutualFollowers.end());
+}
+
+// Function to suggest users to followers
+vector<int> suggestUsersToFollow(int userId) {
+    unordered_set<int> suggestions;
+    for (int follower : adjList[userId]) {
+        for (int followerOfFollower : adjList[follower]) {
+            if (followerOfFollower != userId && !adjList[userId].count(followerOfFollower)) {
+                suggestions.insert(followerOfFollower);
+            }
+        }
+    }
+    return vector<int>(suggestions.begin(), suggestions.end());
+}
+
 // Function to minify a single line of XML
 string minifyXMLLine(const string &xmlContent)
 {

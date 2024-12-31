@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     bool fixErrors = false;
     bool isWordSearch = true;
     vector<int> ids;
+    int suggestedId;
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -57,6 +58,9 @@ int main(int argc, char *argv[])
         }
         else if(arg == "-ids"){
             ids = parseStringToVector(argv[i+1]);
+        }
+        else if(arg == "-id"){
+            suggestedId = arvg[i+1];
         }
         else
         {
@@ -121,7 +125,7 @@ int main(int argc, char *argv[])
     {
         readXML(inputFile);
         vector<int> mutualFollowers = getMutualFollowers(ids);
-        if (mostActive.first != -1){
+        if (mostActive.size() != 0){
             cout << "Mutual friends are: "
             for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
             cout<<endl;
@@ -131,8 +135,15 @@ int main(int argc, char *argv[])
     }
     else if (command == "suggest")
     {
-        // Placeholder for suggest functionality
-        cout << "Suggest functionality is not implemented yet." << endl;
+        readXML(inputFile);
+        vector<int> suggestions = suggestUsersToFollow(suggestedId);
+        if (suggestions.size() != 0){
+            cout << "Suggested users are: "
+            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
+            cout<<endl;
+        }
+        else
+            cout << "No suggestions found" <<endl;
     }
     else
     {
