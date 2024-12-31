@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     {
         readXML(inputFile);
         vector<int> mutualFollowers = getMutualFollowers(ids);
-        if (mostActive.size() != 0)
+        if (mutualFollowers.size() != 0)
         {
             cout << "Mutual friends are: ";
             for (int i = 0; i < mutualFollowers.size(); i++)
@@ -145,8 +145,8 @@ int main(int argc, char *argv[])
         if (suggestions.size() != 0)
         {
             cout << "Suggested users are: ";
-            for (int i = 0; i < mutualFollowers.size(); i++)
-                cout << mutualFollowers[i] << " ";
+            for (int i = 0; i < suggestions.size(); i++)
+                cout << suggestions[i] << " ";
             cout << endl;
         }
         else
