@@ -27,6 +27,8 @@ void checkXMLConsistencyCMD(const std::string &inputFile,
 // Function to check XML consistency and fix errors for GUI
 std::string checkXMLConsistencyGUI(const std::string &inputText, char flag);
 
+const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
+
 // Function to search posts by word or topic
 std::vector<std::string> postSearch(bool isCMD,
                                     const std::string &xmlContent,
@@ -42,7 +44,6 @@ std::pair<int, std::string> getMostActiveUser();
 
 // Helper functions
 bool lineEmpty(const std::string &line);
-const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
 
 // Function to extract tag value from a line
 std::string extractTagValue(const std::string &line, const std::string &tag);

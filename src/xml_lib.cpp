@@ -417,7 +417,7 @@ vector<string> postSearch(bool isCMD, const string &xmlContent, const string &se
         if (!static_cast<ifstream *>(inputStream.get())->is_open())
         {
             cerr << "Error opening file!" << endl;
-            return;
+            return {};
         }
     }
     else
