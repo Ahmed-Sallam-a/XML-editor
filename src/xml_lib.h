@@ -53,7 +53,12 @@ std::string minifyXMLFile(const std::string &inputFileName); // For GUI
 // Functions to Suggest users to follow and get mutual followers
 std::vector<int> suggestUsersToFollow(int userId);
 std::vector<int> getMutualFollowers(const std::vector<int> &ids);
-
+//functions to compress and decompress files
+std:: string parseXMLToString(const string& filePath);
+void compress(const string& filePath, const string& outputFilePath);
+void decompress(const string& inputFilePath, const string& outputFilePath); 
+// Function to find most influential user
+std::pair<int, std::string> getMostInfluentialUser();
 // Global variables
 // These are declared here and should be defined in exactly one source (.cpp) file.
 extern std::unordered_map<int, std::unordered_set<int>> adjList; // User ID and their followers
