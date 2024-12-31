@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
         {
             cout << "Mutual followers are: ";
             for (int follower : mutualFollowers)
-                cout << follower << " ";
+                cout << "ID: " << follower << ", Name: " << userNames[follower] << "\t";
             cout << endl;
         }
         else
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
         {
             cout << "Suggested users are: ";
             for (int suggestion : suggestions)
-                cout << suggestion << " ";
+                cout << "ID: " << suggestion << ", Name: " << userNames[suggestion] << "\t";
             cout << endl;
         }
         else
