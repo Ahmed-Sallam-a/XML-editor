@@ -1,7 +1,3 @@
-//
-// Created by ahmed on 12/30/2024.
-//
-
 #ifndef XML_LIB_H
 #define XML_LIB_H
 #include <string>
@@ -19,19 +15,16 @@
 // Namespace usage is avoided in headers to prevent potential naming conflicts.
 // Use std:: prefix for standard library components.
 
-// Helper functions
+//------------------------Helper Functions------------------------//
 bool lineEmpty(const std::string &line);
 vector<int> parseStringToVector(const string &str);
 const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
-// Function to extract tag value from a line
 std::string extractTagValue(const std::string &line, const std::string &tag);
 
-// Function to check XML consistency and fix errors for command line
+// Function to check XML consistency and fix errors
 void checkXMLConsistencyCMD(const std::string &inputFile,
                             const std::string &outputFile,
                             bool fixErrors);
-
-// Function to check XML consistency and fix errors for GUI
 std::string checkXMLConsistencyGUI(const std::string &inputText, char flag);
 
 // Function to search posts by word or topic
