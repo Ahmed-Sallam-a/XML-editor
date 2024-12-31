@@ -7,7 +7,7 @@
 #include <string>
 #include <stack>
 #include <vector>
-#include <utility>         // For std::pair
+#include <utility> // For std::pair
 #include <unordered_map>
 #include <unordered_set>
 #include <iostream>
@@ -28,21 +28,21 @@ void checkXMLConsistencyCMD(const std::string &inputFile,
 std::string checkXMLConsistencyGUI(const std::string &inputText, char flag);
 
 // Function to search posts by word or topic
-void postSearch(bool isCMD,
-               const std::string &xmlContent,
-               const std::string &searchTerm,
-               bool isWord);
+std::vector<std::string> postSearch(bool isCMD,
+                                    const std::string &xmlContent,
+                                    const std::string &searchTerm,
+                                    bool isWord);
 
 // Functions to prettify XML
-std::string prettifyXML(const std::string& inputFile); // For GUI
-void prettifyXML(const std::string& inputFile, const std::string& outputFile);
+std::string prettifyXML(const std::string &inputFile); // For GUI
+void prettifyXML(const std::string &inputFile, const std::string &outputFile);
 
 // Function to get the most active user
 std::pair<int, std::string> getMostActiveUser();
 
 // Helper functions
 bool lineEmpty(const std::string &line);
-const char* getReqArg(int &i, int argc, char *argv[], const std::string &option);
+const char *getReqArg(int &i, int argc, char *argv[], const std::string &option);
 
 // Function to extract tag value from a line
 std::string extractTagValue(const std::string &line, const std::string &tag);
@@ -60,6 +60,6 @@ std::string minifyXMLFile(const std::string &inputFileName); // For GUI
 // Global variables
 // These are declared here and should be defined in exactly one source (.cpp) file.
 extern std::unordered_map<int, std::unordered_set<int>> adjList; // User ID and their followers
-extern std::unordered_map<int, std::string> userNames;          // User ID to name mapping
+extern std::unordered_map<int, std::string> userNames;           // User ID to name mapping
 
-#endif //XML_EDITOR_H
+#endif // XML_EDITOR_H
