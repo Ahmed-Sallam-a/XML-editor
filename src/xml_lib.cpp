@@ -1,24 +1,19 @@
-//
-// Created by ahmed on 12/30/2024.
-//
-
 #include "xml_lib.h"
-
-// Using namespace std is allowed in source files
 using namespace std;
 
 // Definition of global variables
 unordered_map<int, unordered_set<int>> adjList; // User ID and their followers
 unordered_map<int, string> userNames;           // User ID to name mapping
 
-// Helper function to check if a line is empty or contains only whitespace
+//------------------------Helper Functions------------------------//
+// function to check if a line is empty or contains only whitespace
 bool lineEmpty(const string &line)
 {
     return all_of(line.begin(), line.end(), [](char c)
                   { return isspace(c); });
 }
 
-// Helper function to get the required argument for a command-line option
+// function to get the required argument for a command-line option
 const char *getReqArg(int &i, int argc, char *argv[], const string &option)
 {
     if (i + 1 < argc && argv[i + 1][0] != '-')
@@ -29,20 +24,6 @@ const char *getReqArg(int &i, int argc, char *argv[], const string &option)
         cerr << "Error: " << option << " option requires an argument." << endl;
         exit(1);
     }
-}
-
-// Function to parse the string to vector of numbers
-vector<int> parseStringToVector(const string& str) {
-    vector<int> result;
-    stringstream ss(str);
-    string token;
-
-    // Use ',' as the delimiter
-    while (getline(ss, token, ',')) {
-        result.push_back(stoi(token)); // Convert token to integer and add to vector
-    }
-
-    return result;
 }
 
 // Function to extract the value of a specific XML tag from a line
@@ -725,35 +706,6 @@ pair<int, string> getMostActiveUser()
         return {mostActive, userNames[mostActive]};
     else
         return {-1, ""};
-}
-
-// Function to get the mutual followers between users
-vector<int> getMutualFollowers(const vector<int> &ids) {
-    if (ids.empty()) return {};
-    unordered_set<int> mutualFollowers = adjList[ids[0]];
-    for (size_t i = 1; i < ids.size(); ++i) {
-        unordered_set<int> currentFollowers = adjList[ids[i]];
-        for (auto it = mutualFollowers.begin(); it != mutualFollowers.end();) {
-            if (currentFollowers.find(*it) == currentFollowers.end())
-                it = mutualFollowers.erase(it);
-            else
-                ++it;
-        }
-    }
-    return vector<int>(mutualFollowers.begin(), mutualFollowers.end());
-}
-
-// Function to suggest users to followers
-vector<int> suggestUsersToFollow(int userId) {
-    unordered_set<int> suggestions;
-    for (int follower : adjList[userId]) {
-        for (int followerOfFollower : adjList[follower]) {
-            if (followerOfFollower != userId && !adjList[userId].count(followerOfFollower)) {
-                suggestions.insert(followerOfFollower);
-            }
-        }
-    }
-    return vector<int>(suggestions.begin(), suggestions.end());
 }
 
 // Function to minify a single line of XML

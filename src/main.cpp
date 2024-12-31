@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
     string command = argv[1];
     bool fixErrors = false;
     bool isWordSearch = true;
-    vector<int> ids;
     int suggestedId;
+    vector<int> ids;
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -56,15 +56,17 @@ int main(int argc, char *argv[])
             searchTerm = getReqArg(i, argc, argv, "-t");
             isWordSearch = false;
         }
-        else if (arg == "-f"){
+        else if (arg == "-f")
             fixErrors = true;
+
+        else if (arg == "-ids")
+        {
+            ids = parseStringToVector(argv[i + 1]);
         }
-        else if(arg == "-ids"){
-            ids = parseStringToVector(argv[i+1]);
-        }
-        else if(arg == "-id"){
-            suggestedId = argv[i+1];
-        }
+
+        else if (arg == "-id") // -id 1
+            suggestedId = stoi(getReqArg(i, argc, argv, "-id"));
+
         else
         {
             cerr << "Unknown option: " << arg << endl;
@@ -77,45 +79,38 @@ int main(int argc, char *argv[])
         postSearch(true, inputFile, searchTerm, isWordSearch);
 
     else if (command == "verify")
-    {
         checkXMLConsistencyCMD(inputFile, outputFile, fixErrors);
-    }
+
     else if (command == "format")
-    {
-        // Implement format functionality
         prettifyXML(inputFile, outputFile);
-    }
+
     else if (command == "json")
     {
-        // Placeholder for JSON conversion functionality
-        if (XmlToJsonConverter::processFiles(inputFile, outputFile)) {
-        std::cout << "Conversion successful.\n";
-        return 0;
-    } else {
-        std::cerr << "Conversion failed.\n";
-        return 1;
+        if (XmlToJsonConverter::processFiles(inputFile, outputFile))
+        {
+            cout << "Conversion successful.\n";
+            return 0;
+        }
+        else
+        {
+            std::cerr << "Conversion failed.\n";
+            return 1;
         }
     }
     else if (command == "mini")
-    {
-        // Implement minify functionality
         minifyXMLFile(inputFile, outputFile);
-    }
+
     else if (command == "compress")
     {
-        // Placeholder for compress functionality
         cout << "Compress functionality is not implemented yet." << endl;
     }
     else if (command == "decompress")
     {
-        // Placeholder for decompress functionality
         cout << "Decompress functionality is not implemented yet." << endl;
     }
     else if (command == "draw")
-    {
-        // Placeholder for draw functionality
         processXMLToPNG(inputFile, outputFile);
-    }
+
     else if (command == "most_active")
     {
         readXML(inputFile);
@@ -127,33 +122,36 @@ int main(int argc, char *argv[])
     }
     else if (command == "most_influencer")
     {
-        // Placeholder for most_influencer functionality
         cout << "Most Influencer functionality is not implemented yet." << endl;
     }
-    else if (command == "mutual")
-    {
-        readXML(inputFile);
-        vector<int> mutualFollowers = getMutualFollowers(ids);
-        if (mostActive.size() != 0){
-            cout << "Mutual friends are: "
-            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
-            cout<<endl;
-        }
-        else
-            cout << "No mutual followers found" <<endl;
-    }
-    else if (command == "suggest")
-    {
-        readXML(inputFile);
-        vector<int> suggestions = suggestUsersToFollow(suggestedId);
-        if (suggestions.size() != 0){
-            cout << "Suggested users are: "
-            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
-            cout<<endl;
-        }
-        else
-            cout << "No suggestions found" <<endl;
-    }
+    // else if (command == "mutual")
+    // {
+    //     readXML(inputFile);
+    //     vector<int> mutualFollowers = getMutualFollowers(ids);
+    //     if (mostActive.size() != 0)
+    //     {
+    //         cout << "Mutual friends are: ";
+    //         for (int i = 0; i < mutualFollowers.size(); i++)
+    //             cout << mutualFollowers[i] << " ";
+    //         cout << endl;
+    //     }
+    //     else
+    //         cout << "No mutual followers found" << endl;
+    // }
+    // else if (command == "suggest")
+    // {
+    //     readXML(inputFile);
+    //     vector<int> suggestions = suggestUsersToFollow(suggestedId);
+    //     if (suggestions.size() != 0)
+    //     {
+    //         cout << "Suggested users are: ";
+    //         for (int i = 0; i < mutualFollowers.size(); i++)
+    //             cout << mutualFollowers[i] << " ";
+    //         cout << endl;
+    //     }
+    //     else
+    //         cout << "No suggestions found" << endl;
+    // }
     else
     {
         cerr << "Unknown command: " << command << endl;
