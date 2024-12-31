@@ -3,6 +3,9 @@
 //
 // Main function to handle command-line operations
 #include "xml_lib.h"
+#include "xmltojsonconverter.h"
+#include "DrawGraph.h"
+
 using namespace std;
 int main(int argc, char *argv[])
 {
@@ -31,6 +34,8 @@ int main(int argc, char *argv[])
     string command = argv[1];
     bool fixErrors = false;
     bool isWordSearch = true;
+    vector<int> ids;
+    int suggestedId;
 
     // Parse command line arguments
     for (int i = 2; i < argc; ++i)
@@ -51,9 +56,15 @@ int main(int argc, char *argv[])
             searchTerm = getReqArg(i, argc, argv, "-t");
             isWordSearch = false;
         }
-        else if (arg == "-f")
+        else if (arg == "-f"){
             fixErrors = true;
-
+        }
+        else if(arg == "-ids"){
+            ids = parseStringToVector(argv[i+1]);
+        }
+        else if(arg == "-id"){
+            suggestedId = argv[i+1];
+        }
         else
         {
             cerr << "Unknown option: " << arg << endl;
@@ -77,12 +88,18 @@ int main(int argc, char *argv[])
     else if (command == "json")
     {
         // Placeholder for JSON conversion functionality
-        cout << "JSON conversion functionality is not implemented yet." << endl;
+        if (XmlToJsonConverter::processFiles(inputFile, outputFile)) {
+        std::cout << "Conversion successful.\n";
+        return 0;
+    } else {
+        std::cerr << "Conversion failed.\n";
+        return 1;
+        }
     }
     else if (command == "mini")
     {
         // Implement minify functionality
-        prettifyXML(inputFile, outputFile);
+        minifyXMLFile(inputFile, outputFile);
     }
     else if (command == "compress")
     {
@@ -97,7 +114,7 @@ int main(int argc, char *argv[])
     else if (command == "draw")
     {
         // Placeholder for draw functionality
-        cout << "Draw functionality is not implemented yet." << endl;
+        processXMLToPNG(inputFile, outputFile);
     }
     else if (command == "most_active")
     {
@@ -115,13 +132,27 @@ int main(int argc, char *argv[])
     }
     else if (command == "mutual")
     {
-        // Placeholder for mutual functionality
-        cout << "Mutual functionality is not implemented yet." << endl;
+        readXML(inputFile);
+        vector<int> mutualFollowers = getMutualFollowers(ids);
+        if (mostActive.size() != 0){
+            cout << "Mutual friends are: "
+            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
+            cout<<endl;
+        }
+        else
+            cout << "No mutual followers found" <<endl;
     }
     else if (command == "suggest")
     {
-        // Placeholder for suggest functionality
-        cout << "Suggest functionality is not implemented yet." << endl;
+        readXML(inputFile);
+        vector<int> suggestions = suggestUsersToFollow(suggestedId);
+        if (suggestions.size() != 0){
+            cout << "Suggested users are: "
+            for(int i=0;i<mutualFollowers.size();i++) cout<<mutualFollowers[i]<<" ";
+            cout<<endl;
+        }
+        else
+            cout << "No suggestions found" <<endl;
     }
     else
     {
