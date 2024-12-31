@@ -3,6 +3,9 @@
 //
 // Main function to handle command-line operations
 #include "xml_lib.h"
+#include "xmltojsonconverter.h"
+#include "DrawGraph.h"
+
 using namespace std;
 int main(int argc, char *argv[])
 {
@@ -60,7 +63,7 @@ int main(int argc, char *argv[])
             ids = parseStringToVector(argv[i+1]);
         }
         else if(arg == "-id"){
-            suggestedId = arvg[i+1];
+            suggestedId = argv[i+1];
         }
         else
         {
@@ -85,7 +88,13 @@ int main(int argc, char *argv[])
     else if (command == "json")
     {
         // Placeholder for JSON conversion functionality
-        cout << "JSON conversion functionality is not implemented yet." << endl;
+        if (XmlToJsonConverter::processFiles(inputFile, outputFile)) {
+        std::cout << "Conversion successful.\n";
+        return 0;
+    } else {
+        std::cerr << "Conversion failed.\n";
+        return 1;
+        }
     }
     else if (command == "mini")
     {
@@ -105,7 +114,7 @@ int main(int argc, char *argv[])
     else if (command == "draw")
     {
         // Placeholder for draw functionality
-        cout << "Draw functionality is not implemented yet." << endl;
+        processXMLToPNG(inputFile, outputFile);
     }
     else if (command == "most_active")
     {
