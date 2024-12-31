@@ -1,3 +1,0 @@
-D:/xml editor/back end/XML-editor/src/cmake-build-debug/CMakeFiles/src.dir
-D:/xml editor/back end/XML-editor/src/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/xml editor/back end/XML-editor/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
