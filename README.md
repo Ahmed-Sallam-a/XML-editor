@@ -197,5 +197,3 @@ The GUI version of the library can be integrated into applications to provide XM
 - [C++ Standard Library Documentation](https://en.cppreference.com/w/)
 - [Boost Library Documentation](https://www.boost.org/doc/libs/)
 - [Regular Expressions in C++](https://www.regular-expressions.info/stdcpp.html)
-
-This README provides an overview of the XML Processing Library, its features, usage instructions, and details about the data structures and functions used in the project.
