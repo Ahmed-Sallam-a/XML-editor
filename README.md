@@ -47,20 +47,48 @@ This project is an XML processing library designed to handle various XML-related
     cd xml-processing-library
     ```
 
-3. Compile the project:
+3. Build the project using CMake:
 
     ```sh
-    g++ -o xml_processor src/xml_lib.cpp src/main.cpp
+    mkdir build && cd build
+    cmake ..
+    make
     ```
+
+    The executable will be located at `build/src/cli/xml_editor`
+
+4. (Optional) Install the library and CLI tool:
+
+    ```sh
+    sudo make install
+    ```
+
+## Project Structure
+
+The project is now organized into modular components:
+
+- **src/lib/** - Core XML processing library (can be used independently)
+  - `xml_lib.cpp/h` - Core XML operations
+  - `DrawGraph.cpp/h` - Graph visualization
+  - `xmltojsonconverter.cpp/h` - XML to JSON conversion
+  
+- **src/cli/** - Command-line interface application
+  - `main.cpp` - CLI entry point
+
+- **src/** - Legacy source files (deprecated, use lib/ and cli/ instead)
+
+- **gui/** - Qt-based graphical user interface
 
 ## Usage
 
 ### Command Line Interface
 
+Run the CLI application from the build directory or after installation:
+
 1. **Check XML Consistency**:
 
     ```sh
-    ./xml_processor verify -i input.xml [-f] [-o output.xml]
+    xml_editor verify -i input.xml [-f] [-o output.xml]
     ```
 
     - `-f`: Fix errors if found
@@ -69,73 +97,91 @@ This project is an XML processing library designed to handle various XML-related
 2. **Prettify XML**:
 
     ```sh
-    ./xml_processor format -i input.xml -o output.xml
+    xml_editor format -i input.xml -o output.xml
     ```
 
 3. **Minify XML**:
 
     ```sh
-    ./xml_processor mini -i input.xml -o output.xml
+    xml_editor mini -i input.xml -o output.xml
     ```
 
 4. **Compress XML**:
 
     ```sh
-    ./xml_processor compress -i input.xml -o output.comp
+    xml_editor compress -i input.xml -o output.comp
     ```
 
 5. **Decompress XML**:
 
     ```sh
-    ./xml_processor decompress -i input.comp -o output.xml
+    xml_editor decompress -i input.comp -o output.xml
     ```
 
 6. **Convert XML to JSON**:
 
     ```sh
-    ./xml_processor json -i input.xml -o output.json
+    xml_editor json -i input.xml -o output.json
     ```
 
 7. **Draw Graph from XML**:
 
     ```sh
-    ./xml_processor draw -i input.xml -o output.jpg
+    xml_editor draw -i input.xml -o output.jpg
     ```
 
 8. **Find Most Active User**:
 
     ```sh
-    ./xml_processor most_active -i input.xml
+    xml_editor most_active -i input.xml
     ```
 
 9. **Find Most Influential User**:
 
     ```sh
-    ./xml_processor most_influencer -i input.xml
+    xml_editor most_influencer -i input.xml
     ```
 
 10. **Find Mutual Followers**:
 
     ```sh
-    ./xml_processor mutual -i input.xml -ids 1,2,3
+    xml_editor mutual -i input.xml -ids 1,2,3
     ```
 
 11. **Suggest Users to Follow**:
 
     ```sh
-    ./xml_processor suggest -i input.xml -id 1
+    xml_editor suggest -i input.xml -id 1
     ```
 
 12. **Search Posts**:
 
     ```sh
-    ./xml_processor search -w word -i input.xml
-    ./xml_processor search -t topic -i input.xml
+    xml_editor search -w word -i input.xml
+    xml_editor search -t topic -i input.xml
     ```
 
 ### Graphical User Interface
 
-The GUI version of the library can be integrated into applications to provide XML processing functionalities through a user-friendly interface.
+The GUI version of the library can be integrated into applications to provide XML processing functionalities through a user-friendly interface. See the `gui/` directory for the Qt-based GUI application.
+
+### Using the Library in Your Own Projects
+
+The XML processing library can be used independently in your own C++ projects:
+
+```cpp
+#include "xml_lib.h"
+#include "DrawGraph.h"
+#include "xmltojsonconverter.h"
+
+// Use the library functions
+std::string result = checkXMLConsistencyGUI(xmlContent, 'c');
+```
+
+Link with the library:
+```bash
+g++ -o your_app your_app.cpp -Lpath/to/lib -lxml_processing
+```
 
 ## Data Structures
 
