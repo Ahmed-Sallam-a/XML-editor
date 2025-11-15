@@ -1,1 +1,42 @@
 *.ini
+
+# Build directories
+build/
+cmake-build-*/
+
+# Compiled binaries
+*.exe
+*.out
+*.app
+xml_editor
+src/xml_editor
+
+# Object files
+*.o
+*.a
+*.so
+*.dylib
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+/tmp/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Qt build artifacts
+*.pro.user*
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
